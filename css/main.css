@@ -1,0 +1,66 @@
+/* Reset & base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(145deg, #1c1644 20%, #d60101 100%);
+  font-family: 'Inter', sans-serif;
+  text-align: center; 
+  padding: 20px;
+}
+
+/*#content img {
+  display: block;
+  margin: 15px auto 0;
+  max-width: 100%;
+  height: auto;
+}
+*/
+
+#movie-container {
+  display: flex;
+  gap: 200px; 
+  max-width: 1200px;
+  padding: 20px;
+}
+
+.movie-card {
+  flex: 1; 
+  text-align: center;
+}
+
+.movie-card img {
+  display: block;
+  margin: 15px auto 0;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.movie-card h2 {
+  margin-bottom: 10px;
+  color: #ffffff; 
+}
+
+.movie-card .rd {
+  margin-bottom: 10px;
+  color: #e2e1de; 
+}
+
+.movie-card p {
+  margin-bottom: 10px;
+  color: #ffc800; 
+}
+
+.movie-card h2.mt {
+  margin-bottom: 50px;
+  color: #ffffff; 
+}
