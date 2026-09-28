@@ -1,19 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE-edge">
-        <meta name="viewport" content="width-device-width, initial-scale-1.0">
-        <meta name="keywords" content="template, html, css, image, paragraph, setup">
-        <meta name="author" content="Declan Landman 262022">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="template, html, css, image, paragraph, setup">
+    <meta name="author" content="Declan Landman 262022">
 
-        <title>Template</title>
+    <title>Nav</title>
 
-        <link rel="stylesheet" href="css/main.css">
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    </head>
-    <body>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
 
-    </body>
+   
+    <div class="navbar">
+        <a href="index.html" class="navLogo">Website Cookers</a>
 
+        <div class="navMenu">
+            <ul class="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="library.html">Library</a></li>
+                <li><a href="collection.html">My Collection</a></li>
+                <li><a href="auth.html">Sign In</a></li>
+            </ul>
+
+            <div class="searchBox">
+                <input type="text" placeholder="Search library...">
+                <button type="button">Search</button>
+            </div>
+        </div>
+
+        
+        <button class="menuToggle" aria-label="Toggle navigation">&#9776;</button>
+    </div>
+    
+    <script src="js/scripts.js"></script>
+</body>
 </html>
