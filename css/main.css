@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    padding: 16px 32px;
+    color: #fff;
+    position: relative;
+    border-bottom: 2px solid #ff6600;
+}
+
+.navLogo {
+    color: #ff6600;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.navLogo:hover {
+    color: #0088ff;
+}
+.navMenu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.navLinks {
+    display: flex;
+    list-style: none;
+    gap: 24px;
+}
+
+.navLinks a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.navLinks a:hover {
+    color: #0088ff;
+}
+
+
+.searchBox {
+    display: flex;
+    gap: 8px;
+}
+
+.searchBox input {
+    padding: 6px 13px;
+    border-radius: 4px;
+    border: 1px solid #333333;
+    background: #1a1a1a;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.searchBox input:focus {
+    border-color: #0088ff;
+}
+
+.searchBox button {
+    padding: 6px 13px;
+    border: none;
+    border-radius: 4px;
+    background: #ff6600; 
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.searchBox button:hover {
+    background: #0088ff; 
+}
+.menuToggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #ff6600; 
+    font-size: 29px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+    .menuToggle {
+        display: block;
+    }
+
+    .navMenu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #0d0d0d;
+        padding: 24px;
+        gap: 24px;
+        border-top: 1px solid #1a1a1a;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+        z-index: 100;
+    }
+
+    .navMenu.active {
+        display: flex; 
+    }
+
+    .navLinks {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}
+
