@@ -1,127 +1,562 @@
+/* ============================================================
+   OPEN WINDOW MOVIE SITE
+   Homepage styling based on supplied reference image
+   ============================================================ */
+
+:root {
+    --header-height: 54px;
+    --page-text: #161616;
+    --muted-text: #777;
+    --header-bg: #575757;
+    --hero-bg: #eef1f3;
+    --placeholder: #c4ced4;
+    --placeholder-light: #eef1f3;
+    --footer-bg: #d9d9d9;
+    --gap: 12px;
+    --radius: 9px;
+}
+
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+
 * {
     box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
     margin: 0;
-    padding: 0;
+    color: var(--page-text);
+    background: #fff;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #000000;
-    padding: 16px 32px;
-    color: #fff;
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+    height: 378px;
     position: relative;
-    border-bottom: 2px solid #ff6600;
+    overflow: hidden;
+    background: var(--hero-bg) url("assets/images/elementor-placeholder-image 1.png") center 54% / cover no-repeat;
 }
 
-.navLogo {
-    color: #ff6600;
-    font-size: 24px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.navLogo:hover {
-    color: #0088ff;
-}
-.navMenu {
+.hero-content {
+    position: relative;
+    z-index: 5;
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: 32px;
 }
 
-.navLinks {
+.hero-copy {
+    width: 360px;
+    margin-top: -15px;
+}
+
+.hero-copy h1 {
+    margin: 0 0 22px;
+    font-size: 42px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.hero-copy p {
+    margin: 0 0 27px;
+    max-width: 365px;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.browse-button {
+    width: 126px;
+    height: 34px;
+    padding: 0;
+    border-radius: 20px;
+    background: #575757;
+    border: 1px solid #222;
+    color: white;
+    font-size: 13px;
+}
+
+.browse-button:hover {
+    background: #3f3f3f;
+    color: white;
+}
+
+
+/* ============================================================
+   POPULAR PICKS
+   ============================================================ */
+
+.popular-section {
+    padding: 39px 0 61px;
+    background: white;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 9px 5px;
+}
+
+
+/* ============================================================
+   POPULAR MOVIE CAROUSEL
+   ============================================================ */
+
+.movie-carousel {
+    position: relative;
+    width: 100%;
+}
+
+.movie-carousel .carousel-inner {
+    overflow: visible;
+}
+
+.movie-carousel .carousel-item {
+    transition: transform 0.6s ease-in-out;
+}
+
+.movie-carousel .row {
+    --bs-gutter-x: 12px;
+    --bs-gutter-y: 12px;
+    flex-wrap: nowrap;
+}
+
+.movie-carousel .row > [class*="col-"] {
     display: flex;
-    list-style: none;
-    gap: 24px;
+    flex: 0 0 auto;
+    width: auto;
 }
 
-.navLinks a {
-    color: #e0e0e0;
-    text-decoration: none;
+.popular-card {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--placeholder);
+    cursor: pointer;
+}
+
+.popular-card-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--placeholder);
+}
+
+.popular-card-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 6px 8px;
+    background: rgba(245, 245, 245, 0.88);
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.popular-card-title {
+    margin: 0 0 3px;
+    font-size: 0.75rem;
     font-weight: 500;
-    transition: color 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.navLinks a:hover {
-    color: #0088ff;
-}
-
-
-.searchBox {
+.rating {
     display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.65rem;
+}
+
+.rating-number {
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.stars {
+    letter-spacing: 0;
+    font-size: 0.55rem;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    width: 36px;
+    height: 55px;
+    transform: translateY(-50%);
+    border: 0;
+    background: rgba(0, 0, 0, 0.30);
+    color: white;
+    font-size: 35px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+.movie-carousel:hover .carousel-arrow {
+    opacity: 1;
+}
+
+.carousel-prev {
+    left: 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.carousel-next {
+    right: 0;
+    border-radius: 8px 0 0 8px;
+}
+
+.carousel-arrow:disabled {
+    opacity: 0 !important;
+}
+
+
+/* ============================================================
+   GENRE FILTERS
+   ============================================================ */
+
+/*
+ * The genre row is deliberately NOT wrapped.
+ *
+ * When all genre buttons fit, they remain on one line.
+ * When they do not fit, the row becomes horizontally scrollable.
+ */
+.genre-scroll-row {
+    display: flex;
+    align-items: center;
     gap: 8px;
+    width: 100%;
+    margin-top: 24px;
 }
 
-.searchBox input {
-    padding: 6px 13px;
-    border-radius: 4px;
-    border: 1px solid #333333;
-    background: #1a1a1a;
-    color: #fff;
-    outline: none;
-    transition: border-color 0.2s ease;
+.genre-scroll {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    /*
+     * Prevent the genre buttons from wrapping.
+     */
+    white-space: nowrap;
+
+    /*
+     * Native touch scrolling on phones/tablets.
+     */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+
+    /*
+     * Hide the browser scrollbar while retaining scrolling.
+     */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    /*
+     * Small padding prevents the first/last button from
+     * touching the viewport edge.
+     */
+    padding: 1px 0 4px;
 }
 
-.searchBox input:focus {
-    border-color: #0088ff;
-}
-
-.searchBox button {
-    padding: 6px 13px;
-    border: none;
-    border-radius: 4px;
-    background: #ff6600; 
-    color: #ffffff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.searchBox button:hover {
-    background: #0088ff; 
-}
-.menuToggle {
+.genre-scroll::-webkit-scrollbar {
     display: none;
-    background: none;
-    border: none;
-    color: #ff6600; 
-    font-size: 29px;
+}
+
+.genre-scroll-control {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 33px;
+    border: 1px solid #777;
+    border-radius: 50%;
+    color: #575757;
+    background: white;
+    font-size: 20px;
+    line-height: 1;
     cursor: pointer;
 }
 
+.genre-scroll-control:hover {
+    color: white;
+    background: #575757;
+}
 
-@media (max-width: 768px) {
-    .menuToggle {
-        display: block;
+.genre-scroll-control[hidden] {
+    display: none;
+}
+
+
+/*
+ * The list itself is wider than the viewport when necessary.
+ * width: max-content is important because it prevents the
+ * buttons from shrinking or wrapping.
+ */
+.genre-list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    gap: 22px;
+
+    width: max-content;
+    min-width: 100%;
+}
+
+
+/*
+ * Fixed button width gives the filter row a consistent
+ * appearance regardless of the text length.
+ */
+.genre-button {
+    flex: 0 0 119px;
+
+    width: 119px;
+    height: 33px;
+
+    padding: 0 18px;
+
+    border: 1px solid #777;
+    background: white;
+    color: #888;
+
+    border-radius: 18px;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.genre-button:hover,
+.genre-button.active {
+    background: #575757;
+    color: white;
+    border-color: #575757;
+}
+
+
+/*
+ * On smaller screens reduce the gap slightly, but keep the
+ * buttons horizontally scrollable rather than wrapping.
+ */
+@media (max-width: 575px) {
+
+    .genre-list {
+        gap: 12px;
     }
 
-    .navMenu {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: #0d0d0d;
-        padding: 24px;
-        gap: 24px;
-        border-top: 1px solid #1a1a1a;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
-        z-index: 100;
-    }
-
-    .navMenu.active {
-        display: flex; 
-    }
-
-    .navLinks {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
+    .genre-button {
+        flex-basis: 100px;
+        width: 100px;
     }
 }
 
+
+/* ============================================================
+   MOVIE GRID
+   ============================================================ */
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    margin: 59px 27px 0;
+}
+
+.grid-movie {
+    min-width: 0;
+    cursor: pointer;
+}
+
+.grid-movie-image {
+    width: 100%;
+    aspect-ratio: 0.77;
+    object-fit: cover;
+    display: block;
+    border-radius: 7px;
+    background: var(--placeholder);
+}
+
+.grid-movie-title {
+    max-width: 150px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ============================================================
+   SHOW MORE
+   ============================================================ */
+
+.show-more-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 58px;
+}
+
+.show-more-button {
+    width: 416px;
+    height: 64px;
+    border: 0;
+    background: #dedede;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 17px;
+}
+
+.show-more-button:hover {
+    background: #d2d2d2;
+}
+
+.chevron {
+    font-size: 28px;
+    line-height: 0;
+    transform: translateY(-3px);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 991px) {
+
+    .hero {
+        height: 330px;
+    }
+
+    .hero-copy h1 {
+        font-size: 38px;
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .hero {
+        height: 315px;
+    }
+
+    .hero-copy {
+        width: 300px;
+    }
+
+    .hero-copy h1 {
+        font-size: 36px;
+    }
+
+    .hero-copy p {
+        font-size: 13px;
+    }
+
+    .movie-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        column-gap: 24px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .grid-movie-image {
+        max-width: 100%;
+    }
+
+    .grid-movie-title {
+        font-size: 12px;
+    }
+}
+
+
+@media (max-width: 575px) {
+
+    .main-navigation {
+        display: none;
+    }
+
+    .header-actions {
+        margin-left: auto;
+    }
+
+    .search-box {
+        width: 145px;
+    }
+
+    .hero {
+        height: 300px;
+    }
+
+    .hero-copy {
+        margin-top: -25px;
+        width: 270px;
+    }
+
+    .hero-copy h1 {
+        font-size: 34px;
+        margin-bottom: 15px;
+    }
+
+    .popular-section {
+        padding-top: 30px;
+    }
+
+    .genre-list {
+        gap: 12px;
+    }
+
+    .genre-button {
+        width: 100px;
+    }
+
+    .movie-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+    }
+
+    .show-more-button {
+        width: 85%;
+        height: 55px;
+    }
+}

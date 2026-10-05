@@ -2,42 +2,177 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="template, html, css, image, paragraph, setup">
-    <meta name="author" content="Declan Landman 262022">
+    <title>Open Window — Movies</title>
 
-    <title>Nav</title>
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
-    
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-   
-    <div class="navbar">
-        <a href="index.html" class="navLogo">Website Cookers</a>
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<header class="site-header">
 
-        <div class="navMenu">
-            <ul class="navLinks">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="library.html">Library</a></li>
-                <li><a href="collection.html">My Collection</a></li>
-                <li><a href="auth.html">Sign In</a></li>
-            </ul>
+</header>
 
-            <div class="searchBox">
-                <input type="text" placeholder="Search library...">
-                <button type="button">Search</button>
+<main>
+
+    <!-- ========================================================
+         HERO
+         ======================================================== -->
+    <section class="hero">
+        <div class="container-fluid hero-content h-100 d-flex align-items-center px-4 px-md-5">
+            <div class="hero-copy">
+                <h1>Welcome</h1>
+
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt
+                </p>
+
+                <button class="btn browse-button">
+                    Browse
+                </button>
             </div>
         </div>
+    </section>
 
-        
-        <button class="menuToggle" aria-label="Toggle navigation">&#9776;</button>
-    </div>
-    
-    <script src="js/scripts.js"></script>
+
+    <!-- ========================================================
+         POPULAR PICKS / CAROUSEL
+         ======================================================== -->
+    <section class="popular-section">
+
+        <div class="container-fluid px-3 px-md-4">
+
+            <h2 class="section-title">Popular picks</h2>
+
+            <div class="movie-carousel carousel slide" id="popularCarousel" data-bs-ride="carousel">
+
+                <button
+                    class="carousel-arrow carousel-prev"
+                    id="popularPrev"
+                    type="button"
+                    data-bs-target="#popularCarousel"
+                    data-bs-slide="prev"
+                    aria-label="Previous movies">
+                    ‹
+                </button>
+
+                <div class="carousel-inner" id="popularCarouselInner">
+                    <!-- JavaScript inserts slides here -->
+                </div>
+
+                <button
+                    class="carousel-arrow carousel-next"
+                    id="popularNext"
+                    type="button"
+                    data-bs-target="#popularCarousel"
+                    data-bs-slide="next"
+                    aria-label="Next movies">
+                    ›
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 GENRE FILTERS
+                 ================================================= -->
+            <div class="genre-scroll-row">
+                <button
+                    class="genre-scroll-control"
+                    id="genrePrev"
+                    type="button"
+                    aria-label="Scroll genres left"
+                    hidden>
+                    ‹
+                </button>
+
+                <div class="genre-scroll">
+                <div class="genre-list" id="genreList">
+
+                    <button class="genre-button active" data-genre="All">
+                        All
+                    </button>
+
+                    <button class="genre-button" data-genre="Thriller">
+                        Thriller
+                    </button>
+
+                    <button class="genre-button" data-genre="Action">
+                        Action
+                    </button>
+
+                    <button class="genre-button" data-genre="Comedy">
+                        Comedy
+                    </button>
+
+                    <button class="genre-button" data-genre="Romance">
+                        Romance
+                    </button>
+
+                    <button class="genre-button" data-genre="Horror">
+                        Horror
+                    </button>
+
+                    <button class="genre-button" data-genre="Drama">
+                        Drama
+                    </button>
+
+                </div>
+                </div>
+
+                <button
+                    class="genre-scroll-control"
+                    id="genreNext"
+                    type="button"
+                    aria-label="Scroll genres right"
+                    hidden>
+                    ›
+                </button>
+            </div>
+
+
+            <!-- =================================================
+                 MOVIE GRID
+                 ================================================= -->
+            <section class="movie-grid" id="movieGrid">
+                <!-- JavaScript inserts movies here -->
+            </section>
+
+
+            <div class="show-more-wrapper">
+                <button id="showMoreButton" class="show-more-button">
+                    <span>Show more</span>
+                    <span class="chevron">⌄</span>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
