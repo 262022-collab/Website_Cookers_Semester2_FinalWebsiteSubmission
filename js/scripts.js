@@ -1,13 +1,5 @@
-/* ============================================================
-   OPEN WINDOW MOVIE SITE
-   Homepage JavaScript
-   ============================================================ */
-
-
-/* ============================================================
-   MOVIE DATA
-   ============================================================ */
-
+//MOVIE DATA
+//PUT DATA FROM API IN THIS ARRAY
 const movies = [
     {
         id: 1,
@@ -15,7 +7,7 @@ const movies = [
         year: 2026,
         rating: 7.9,
         genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 2,
@@ -23,7 +15,7 @@ const movies = [
         year: 2025,
         rating: 8.6,
         genre: "Action",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 3,
@@ -31,7 +23,7 @@ const movies = [
         year: 2025,
         rating: 7.2,
         genre: "Drama",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 4,
@@ -39,7 +31,7 @@ const movies = [
         year: 2025,
         rating: 7.7,
         genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 5,
@@ -47,7 +39,7 @@ const movies = [
         year: 2024,
         rating: 8.1,
         genre: "Action",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 6,
@@ -55,7 +47,7 @@ const movies = [
         year: 2024,
         rating: 7.5,
         genre: "Romance",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 7,
@@ -63,7 +55,7 @@ const movies = [
         year: 2024,
         rating: 8.0,
         genre: "Horror",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 8,
@@ -71,7 +63,7 @@ const movies = [
         year: 2023,
         rating: 7.1,
         genre: "Comedy",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 9,
@@ -79,7 +71,7 @@ const movies = [
         year: 2023,
         rating: 8.3,
         genre: "Drama",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 10,
@@ -87,7 +79,7 @@ const movies = [
         year: 2023,
         rating: 7.8,
         genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 11,
@@ -95,7 +87,7 @@ const movies = [
         year: 2022,
         rating: 8.2,
         genre: "Action",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 12,
@@ -103,7 +95,7 @@ const movies = [
         year: 2022,
         rating: 6.9,
         genre: "Horror",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 13,
@@ -111,7 +103,7 @@ const movies = [
         year: 2022,
         rating: 7.6,
         genre: "Drama",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 14,
@@ -119,7 +111,7 @@ const movies = [
         year: 2021,
         rating: 8.4,
         genre: "Action",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 15,
@@ -127,7 +119,7 @@ const movies = [
         year: 2021,
         rating: 7.0,
         genre: "Romance",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 16,
@@ -135,7 +127,7 @@ const movies = [
         year: 2021,
         rating: 7.9,
         genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 17,
@@ -143,7 +135,7 @@ const movies = [
         year: 2020,
         rating: 7.3,
         genre: "Horror",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 18,
@@ -151,7 +143,7 @@ const movies = [
         year: 2020,
         rating: 7.4,
         genre: "Comedy",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 19,
@@ -159,7 +151,7 @@ const movies = [
         year: 2020,
         rating: 8.5,
         genre: "Drama",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     },
     {
         id: 20,
@@ -167,14 +159,12 @@ const movies = [
         year: 2019,
         rating: 7.8,
         genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image 1.png"
+        image: "assets/images/elementor-placeholder-image.png"
     }
 ];
 
 
-/* ============================================================
-   POPULAR CAROUSEL
-   ============================================================ */
+//CAROUSEL
 
 function getPopularCardsPerSlide() {
 
@@ -192,7 +182,7 @@ function getPopularCardsPerSlide() {
 
 
 function renderPopularCarousel() {
-
+    //CALL API TO GET MOVIES DATA
     const inner = document.getElementById("popularCarouselInner");
 
     if (!inner) {
@@ -263,16 +253,7 @@ function initialisePopularCarousel() {
 
 }
 
-
-/* ============================================================
-   GENRE HORIZONTAL SCROLL
-   ============================================================ */
-
-/*
- * On touch devices the browser naturally handles horizontal
- * scrolling. On desktop, convert vertical mouse-wheel movement
- * over the genre row into horizontal movement.
- */
+//HORIZONTAL SCROLLING FOR GENRE FILTER
 function initialiseGenreScrolling() {
 
     const genreScroll =
@@ -336,10 +317,7 @@ function initialiseGenreScrolling() {
         "wheel",
         event => {
 
-            /*
-             * If the wheel is primarily vertical, use it to
-             * scroll the genre row horizontally.
-             */
+        
             if (
                 Math.abs(event.deltaY) >
                 Math.abs(event.deltaX)
@@ -358,9 +336,7 @@ function initialiseGenreScrolling() {
 }
 
 
-/* ============================================================
-   MOVIE GRID
-   ============================================================ */
+//MOVIE GRID
 
 class MovieGrid {
 
@@ -523,14 +499,12 @@ class MovieGrid {
 }
 
 
-/* ============================================================
-   INITIALISE APPLICATION
-   ============================================================ */
+//INITIALISE ON DOM CONTENT LOADED
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
-
+        //CALL API TO GET INITIAL MOVIES DATA
         initialisePopularCarousel();
 
         new MovieGrid();
