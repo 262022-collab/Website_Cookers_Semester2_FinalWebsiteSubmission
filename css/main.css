@@ -1,0 +1,30 @@
+.card {
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.watchMovieBtn {
+    transition: background-color 0.3s ease;
+    background-color: rgb(98, 99, 99);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 16px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.watchMovieBtn:hover {
+    background-color: rgb(31, 31, 31);
+}
+
+.bookmarkBtn {
+    cursor: pointer;
+    color:rgb(90, 89, 89)
+}
+
