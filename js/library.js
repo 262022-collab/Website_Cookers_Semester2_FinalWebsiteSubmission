@@ -149,7 +149,15 @@ class MovieGrid {
 
         const movieId = Number(button.dataset.id);
         const movie = this.movies.find(m => m.id === movieId);
-        console.log(movie);
+        
+        const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+        
+        const alreadyAdded = favourites.some(f => f.id === movie.id);
+        if(!alreadyAdded) {
+            favourites.push(movie);
+        }
+
+        localStorage.setItem("favourites", JSON.stringify(favourites));
         });
 
         const genreList = document.getElementById("genreList");
@@ -214,7 +222,6 @@ class MovieGrid {
             return new Movie(title, overview, releaseDate, image, id, genres);
         });
 
-        console.log(loadedMovies[0]);
 
         // Initialise Library Components with API Data
         new MovieGrid(loadedMovies);
