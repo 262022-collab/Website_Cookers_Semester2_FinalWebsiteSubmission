@@ -1,9 +1,10 @@
 class Movie {
-    constructor(_title, _overview, _releaseDate, _image, _genres = []) {
+    constructor(_title, _overview, _releaseDate, _image, _id, _genres = []) {
         this.title = _title;
         this.overview = _overview;
         this.releaseDate = _releaseDate;
         this.image = _image;
+        this.id = _id;
         this.genres = _genres; // Array of genre names like ["Action", "Thriller"]
     }
 }
@@ -196,11 +197,15 @@ class MovieGrid {
                 ? "https://image.tmdb.org/t/p/w200" + item.poster_path 
                 : "assets/images/elementor-placeholder-image.png";
 
+            let id = item.id;    
+
             // Map genre_ids from API to actual names
             let genres = (item.genre_ids || []).map(id => genreMap[id]).filter(Boolean);
 
-            return new Movie(title, overview, releaseDate, image, genres);
+            return new Movie(title, overview, releaseDate, image, id, genres);
         });
+
+        console.log(loadedMovies[0]);
 
         // Initialise Library Components with API Data
         new MovieGrid(loadedMovies);
