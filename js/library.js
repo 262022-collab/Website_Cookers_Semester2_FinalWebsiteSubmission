@@ -147,7 +147,9 @@ class MovieGrid {
             const button = event.target.closest(".favouritesBtn");
             if(!button) return;
 
-            console.log(button.dataset.id);
+        const movieId = Number(button.dataset.id);
+        const movie = this.movies.find(m => m.id === movieId);
+        console.log(movie);
         });
 
         const genreList = document.getElementById("genreList");
