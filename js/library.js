@@ -113,7 +113,7 @@ class MovieGrid {
                             <p class="card-text text-muted small mb-3">${releaseYear} • ${displayGenres}</p>
                             <div class="d-grid gap-2 mt-auto">
                                 <a href="#" class="btn btnWN btn-sm fw-bold">Watch Now</a>
-                                <button type="button" class="btn btn-outline-secondary btn-sm">Add to Favourites</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm favouritesBtn" data-id="${movie.id}">Add to Favourites</button>
                             </div>
                         </div>
                     </div>
@@ -142,6 +142,13 @@ class MovieGrid {
         if (this.showMoreButton) {
             this.showMoreButton.addEventListener("click", () => this.showMore());
         }
+
+        this.grid.addEventListener("click", event => {
+            const button = event.target.closest(".favouritesBtn");
+            if(!button) return;
+
+            console.log(button.dataset.id);
+        });
 
         const genreList = document.getElementById("genreList");
         if (genreList) {
