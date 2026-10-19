@@ -1,515 +1,342 @@
-//MOVIE DATA
-//PUT DATA FROM API IN THIS ARRAY
-const movies = [
-    {
-        id: 1,
-        title: "Movie title",
-        year: 2026,
-        rating: 7.9,
-        genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 2,
-        title: "Shadow Protocol",
-        year: 2025,
-        rating: 8.6,
-        genre: "Action",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 3,
-        title: "Beyond the Stars",
-        year: 2025,
-        rating: 7.2,
-        genre: "Drama",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 4,
-        title: "The Last Signal",
-        year: 2025,
-        rating: 7.7,
-        genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 5,
-        title: "Fast Horizon",
-        year: 2024,
-        rating: 8.1,
-        genre: "Action",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 6,
-        title: "Love Again",
-        year: 2024,
-        rating: 7.5,
-        genre: "Romance",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 7,
-        title: "Dark House",
-        year: 2024,
-        rating: 8.0,
-        genre: "Horror",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 8,
-        title: "Laughing Matter",
-        year: 2023,
-        rating: 7.1,
-        genre: "Comedy",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 9,
-        title: "Red Planet",
-        year: 2023,
-        rating: 8.3,
-        genre: "Drama",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 10,
-        title: "Final Code",
-        year: 2023,
-        rating: 7.8,
-        genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 11,
-        title: "The Colony",
-        year: 2022,
-        rating: 8.2,
-        genre: "Action",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 12,
-        title: "After Midnight",
-        year: 2022,
-        rating: 6.9,
-        genre: "Horror",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 13,
-        title: "The Journey",
-        year: 2022,
-        rating: 7.6,
-        genre: "Drama",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 14,
-        title: "Infinite",
-        year: 2021,
-        rating: 8.4,
-        genre: "Action",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 15,
-        title: "One More Summer",
-        year: 2021,
-        rating: 7.0,
-        genre: "Romance",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 16,
-        title: "The Forgotten",
-        year: 2021,
-        rating: 7.9,
-        genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 17,
-        title: "The Visitor",
-        year: 2020,
-        rating: 7.3,
-        genre: "Horror",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 18,
-        title: "Comedy Night",
-        year: 2020,
-        rating: 7.4,
-        genre: "Comedy",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 19,
-        title: "Deep Space",
-        year: 2020,
-        rating: 8.5,
-        genre: "Drama",
-        image: "assets/images/elementor-placeholder-image.png"
-    },
-    {
-        id: 20,
-        title: "Last Light",
-        year: 2019,
-        rating: 7.8,
-        genre: "Thriller",
-        image: "assets/images/elementor-placeholder-image.png"
+// Movie Class Definition
+class Movie {
+    constructor(_title, _overview, _releaseDate, _image, _backdrop, _rating = 0) {
+        this.title = _title;
+        this.overview = _overview;
+        this.releaseDate = _releaseDate;
+        this.image = _image;
+        this.backdrop = _backdrop;
+        this.rating = _rating;
     }
-];
+}
 
+// Global variable to hold loaded API movies for resize re-renders
+let loadedMovies = [];
+let selectedMovieIndex = 0;
+let heroCarouselInstance;
+let queuedHeroMovieIndex;
 
-//CAROUSEL
+function escapeHtml(value) {
+    const entities = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+    };
 
+    return String(value).replace(/[&<>"']/g, character => entities[character]);
+}
+
+function renderHeroIndicators() {
+    const indicators = document.querySelector(".hero-indicators");
+
+    if (!indicators) {
+        return;
+    }
+
+    indicators.innerHTML = getVisiblePopularMovieIndices().map((index, position) => `
+        <button
+            type="button"
+            data-bs-target="#heroCarousel"
+            data-bs-slide-to="${position}"
+            class="${index === selectedMovieIndex ? "active" : ""}"
+            aria-current="${index === selectedMovieIndex ? "true" : "false"}"
+            data-movie-index="${index}"
+            aria-label="Show ${escapeHtml(loadedMovies[index].title)}"
+        ></button>
+    `).join("");
+
+    const activeIndicator = indicators.querySelector(".active");
+
+    if (activeIndicator) {
+        const indicatorLeft = activeIndicator.offsetLeft;
+        const indicatorRight = indicatorLeft + activeIndicator.offsetWidth;
+
+        if (indicatorLeft < indicators.scrollLeft) {
+            indicators.scrollLeft = indicatorLeft;
+        } else if (indicatorRight > indicators.scrollLeft + indicators.clientWidth) {
+            indicators.scrollLeft = indicatorRight - indicators.clientWidth;
+        }
+    }
+}
+
+function getVisiblePopularMovieIndices() {
+    const activeSlide = document.querySelector("#popularCarousel .carousel-item.active");
+
+    if (!activeSlide) {
+        return [];
+    }
+
+    return [...activeSlide.querySelectorAll(".popular-card")]
+        .map(card => Number(card.dataset.movieIndex));
+}
+
+function renderHeroCarousel() {
+    const carousel = document.getElementById("heroCarousel");
+    const inner = document.getElementById("heroCarouselInner");
+    const visibleMovieIndices = getVisiblePopularMovieIndices();
+
+    if (!carousel || !inner || visibleMovieIndices.length === 0) {
+        return;
+    }
+
+    if (heroCarouselInstance) {
+        heroCarouselInstance.dispose();
+    }
+    queuedHeroMovieIndex = undefined;
+
+    if (!visibleMovieIndices.includes(selectedMovieIndex)) {
+        selectedMovieIndex = visibleMovieIndices[0];
+    }
+
+    inner.innerHTML = visibleMovieIndices.map(index => {
+        const movie = loadedMovies[index];
+        const title = escapeHtml(movie.title);
+        const isActive = index === selectedMovieIndex;
+
+        return `
+            <div class="carousel-item${isActive ? " active" : ""}" data-movie-index="${index}">
+                <img
+                    class="hero-scene"
+                    src="${escapeHtml(movie.backdrop || movie.image)}"
+                    data-fallback-image="${escapeHtml(movie.image)}"
+                    alt="${title} backdrop"
+                >
+                <div class="hero-media-gradient"></div>
+            </div>
+        `;
+    }).join("");
+
+    renderHeroIndicators();
+    heroCarouselInstance = new bootstrap.Carousel(carousel, {
+        interval: visibleMovieIndices.length > 1 ? 7000 : false,
+        pause: false,
+        ride: visibleMovieIndices.length > 1 ? "carousel" : false,
+        touch: true,
+        wrap: true
+    });
+    updateHeroMovieDetails(selectedMovieIndex);
+}
+
+function updateHeroMovieDetails(index) {
+    selectedMovieIndex = index;
+    const visibleMovieIndices = getVisiblePopularMovieIndices();
+
+    if (loadedMovies.length === 0 || !visibleMovieIndices.includes(selectedMovieIndex)) {
+        return;
+    }
+
+    const movie = loadedMovies[selectedMovieIndex];
+    const heroCopy = document.querySelector(".hero-copy");
+    const heroTitle = document.querySelector(".hero-title");
+    const badgeText = document.getElementById("heroBadgeText");
+
+    heroTitle.textContent = movie.title;
+    heroCopy.classList.toggle("hero-copy--long-title", movie.title.length > 18);
+    badgeText.textContent = `Rating · ${movie.rating}/10`;
+
+    document.querySelectorAll(".popular-card").forEach(card => {
+        const isSelected = Number(card.dataset.movieIndex) === selectedMovieIndex;
+        card.classList.toggle("selected", isSelected);
+        card.setAttribute("aria-pressed", String(isSelected));
+    });
+
+    renderHeroIndicators();
+}
+
+function selectHeroMovie(index) {
+    const visibleMovieIndices = getVisiblePopularMovieIndices();
+    const position = visibleMovieIndices.indexOf(index);
+
+    if (position === -1 || !heroCarouselInstance) {
+        return;
+    }
+
+    const activeSlide = document.querySelector("#heroCarousel .carousel-item.active");
+
+    if (activeSlide && Number(activeSlide.dataset.movieIndex) === index) {
+        queuedHeroMovieIndex = undefined;
+        return;
+    }
+
+    queuedHeroMovieIndex = index;
+    heroCarouselInstance.to(position);
+}
+
+// Determine how many cards to show per slide based on screen width
 function getPopularCardsPerSlide() {
-
     if (window.innerWidth < 576) {
         return 2;
     }
-
     if (window.innerWidth < 992) {
         return 3;
     }
-
     return 4;
-
 }
 
-
+// Render the carousel slides dynamically using API data
 function renderPopularCarousel() {
-    //CALL API TO GET MOVIES DATA
     const inner = document.getElementById("popularCarouselInner");
 
-    if (!inner) {
+    if (!inner || loadedMovies.length === 0) {
         return;
     }
 
     const cardsPerSlide = getPopularCardsPerSlide();
-
     const slides = [];
 
-    for (let i = 0; i < movies.length; i += cardsPerSlide) {
-
-        const slideMovies = movies.slice(i, i + cardsPerSlide);
+    for (let i = 0; i < loadedMovies.length; i += cardsPerSlide) {
+        const slideMovies = loadedMovies.slice(i, i + cardsPerSlide);
 
         slides.push(`
-            <div class="carousel-item ${i === 0 ? "active" : ""}">
+            <div class="carousel-item ${selectedMovieIndex >= i && selectedMovieIndex < i + cardsPerSlide ? "active" : ""}">
                 <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
-                    ${slideMovies.map(movie => `
-                        <div class="col">
-                            <article class="popular-card">
+                    ${slideMovies.map((movie, slideIndex) => {
+                        const movieIndex = i + slideIndex;
+                        const isSelected = movieIndex === selectedMovieIndex;
+                        const title = escapeHtml(movie.title);
 
-                                <img
-                                    class="popular-card-image"
-                                    src="${movie.image}"
-                                    alt="${movie.title}"
-                                    loading="lazy"
-                                >
-
-                                <div class="popular-card-overlay">
-
-                                    <h3 class="popular-card-title">
-                                        ${movie.title}
-                                    </h3>
-
-                                    <div class="rating">
-
-                                        <span class="rating-number">
-                                            ${movie.rating}
-                                        </span>
-
-                                        <span class="stars">
-                                            ★★★★★
-                                        </span>
-
-                                    </div>
-
+                        return `
+                    <div class="col">
+                        <article
+                            class="popular-card${isSelected ? " selected" : ""}"
+                            data-movie-index="${movieIndex}"
+                            role="button"
+                            tabindex="0"
+                            aria-pressed="${isSelected}"
+                            aria-label="Show ${title} in hero"
+                        >
+                            <img
+                                class="popular-card-image"
+                                src="${movie.image}"
+                                alt="${title}"
+                                loading="lazy"
+                            >
+                            <div class="popular-card-overlay">
+                                <h3 class="popular-card-title">${title}</h3>
+                                <div class="rating">
+                                    <span class="rating-number">${movie.rating}</span>
+                                    <span class="stars">★★★★★</span>
                                 </div>
-
-                            </article>
-                        </div>
-                    `).join("")}
+                            </div>
+                        </article>
+                    </div>
+                `;
+                        }).join("")}
                 </div>
             </div>
         `);
-
     }
 
     inner.innerHTML = slides.join("");
-
 }
-
 
 function initialisePopularCarousel() {
-
     renderPopularCarousel();
+    renderHeroCarousel();
 
-    window.addEventListener("resize", renderPopularCarousel);
+    const inner = document.getElementById("popularCarouselInner");
+    const carousel = document.getElementById("popularCarousel");
+    inner.addEventListener("click", event => {
+        const card = event.target.closest(".popular-card");
 
-}
+        if (card) {
+            selectHeroMovie(Number(card.dataset.movieIndex));
+        }
+    });
+    inner.addEventListener("keydown", event => {
+        const card = event.target.closest(".popular-card");
 
-//HORIZONTAL SCROLLING FOR GENRE FILTER
-function initialiseGenreScrolling() {
+        if (card && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            selectHeroMovie(Number(card.dataset.movieIndex));
+        }
+    });
 
-    const genreScroll =
-        document.querySelector(".genre-scroll");
+    document.getElementById("heroCarousel").addEventListener("slid.bs.carousel", event => {
+        const activeSlide = event.target.querySelector(".carousel-item.active");
 
-    if (!genreScroll) {
-        return;
-    }
+        if (activeSlide) {
+            const activeMovieIndex = Number(activeSlide.dataset.movieIndex);
+            updateHeroMovieDetails(activeMovieIndex);
 
-    const previousButton =
-        document.getElementById("genrePrev");
-    const nextButton =
-        document.getElementById("genreNext");
+            if (queuedHeroMovieIndex !== undefined) {
+                const visibleMovieIndices = getVisiblePopularMovieIndices();
+                const queuedPosition = visibleMovieIndices.indexOf(queuedHeroMovieIndex);
 
-    const updateScrollControls = () => {
-
-        const maxScroll =
-            genreScroll.scrollWidth -
-            genreScroll.clientWidth;
-
-        previousButton.hidden =
-            maxScroll <= 1 ||
-            genreScroll.scrollLeft <= 1;
-
-        nextButton.hidden =
-            maxScroll <= 1 ||
-            genreScroll.scrollLeft >= maxScroll - 1;
-
-    };
-
-    previousButton.addEventListener(
-        "click",
-        () => genreScroll.scrollBy({
-            left: -genreScroll.clientWidth * 0.75,
-            behavior: "smooth"
-        })
-    );
-
-    nextButton.addEventListener(
-        "click",
-        () => genreScroll.scrollBy({
-            left: genreScroll.clientWidth * 0.75,
-            behavior: "smooth"
-        })
-    );
-
-    genreScroll.addEventListener(
-        "scroll",
-        updateScrollControls,
-        { passive: true }
-    );
-
-    window.addEventListener(
-        "resize",
-        updateScrollControls
-    );
-
-    updateScrollControls();
-
-    genreScroll.addEventListener(
-        "wheel",
-        event => {
-
-        
-            if (
-                Math.abs(event.deltaY) >
-                Math.abs(event.deltaX)
-            ) {
-
-                event.preventDefault();
-
-                genreScroll.scrollLeft +=
-                    event.deltaY;
-
+                if (queuedPosition === -1 || queuedHeroMovieIndex === activeMovieIndex) {
+                    queuedHeroMovieIndex = undefined;
+                } else {
+                    heroCarouselInstance.to(queuedPosition);
+                }
             }
+        }
+    });
+    document.getElementById("heroCarouselInner").addEventListener("error", event => {
+        const image = event.target;
 
-        },
-        { passive: false }
-    );
-}
+        if (image.matches(".hero-scene") && image.src !== image.dataset.fallbackImage) {
+            image.src = image.dataset.fallbackImage;
+        }
+    }, true);
+    carousel.addEventListener("slid.bs.carousel", () => {
+        const visibleMovieIndices = getVisiblePopularMovieIndices();
 
-
-//MOVIE GRID
-
-class MovieGrid {
-
-    constructor() {
-
-        this.grid =
-            document.getElementById(
-                "movieGrid"
-            );
-
-        this.showMoreButton =
-            document.getElementById(
-                "showMoreButton"
-            );
-
-        this.visibleCount = 16;
-
-        this.activeGenre = "All";
-
-        this.render();
-
-        this.bindEvents();
-
-    }
-
-
-    getFilteredMovies() {
-
-        if (this.activeGenre === "All") {
-            return movies;
+        if (visibleMovieIndices.length === 0) {
+            return;
         }
 
-        return movies.filter(
-            movie =>
-                movie.genre ===
-                this.activeGenre
-        );
+        if (!visibleMovieIndices.includes(selectedMovieIndex)) {
+            selectedMovieIndex = visibleMovieIndices[0];
+        }
 
-    }
+        renderHeroCarousel();
+    });
 
-
-    render() {
-
-        const filtered =
-            this.getFilteredMovies();
-
-        const visible =
-            filtered.slice(
-                0,
-                this.visibleCount
-            );
-
-
-        this.grid.innerHTML =
-            visible.map(
-                movie => {
-
-                    return `
-                        <article
-                            class="grid-movie"
-                            data-id="${movie.id}"
-                        >
-
-                            <img
-                                class="grid-movie-image"
-                                src="${movie.image}"
-                                alt="${movie.title}"
-                                loading="lazy"
-                            >
-
-                            <div class="grid-movie-title">
-                                ${movie.title}
-                            </div>
-
-                        </article>
-                    `;
-
-                }
-            ).join("");
-
-
-        this.showMoreButton.style.display =
-            filtered.length > this.visibleCount
-                ? "flex"
-                : "none";
-
-    }
-
-
-    setGenre(genre) {
-
-        this.activeGenre = genre;
-
-        this.visibleCount = 16;
-
-        this.render();
-
-    }
-
-
-    showMore() {
-
-        this.visibleCount += 8;
-
-        this.render();
-
-    }
-
-
-    bindEvents() {
-
-        this.showMoreButton.addEventListener(
-            "click",
-            () => this.showMore()
-        );
-
-
-        document
-            .getElementById("genreList")
-            .addEventListener(
-                "click",
-                event => {
-
-                    const button =
-                        event.target.closest(
-                            ".genre-button"
-                        );
-
-                    if (!button) {
-                        return;
-                    }
-
-
-                    document
-                        .querySelectorAll(
-                            ".genre-button"
-                        )
-                        .forEach(
-                            item =>
-                                item.classList.remove(
-                                    "active"
-                                )
-                        );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    this.setGenre(
-                        button.dataset.genre
-                    );
-
-                }
-            );
-
-    }
-
+    window.addEventListener("resize", () => {
+        renderPopularCarousel();
+        renderHeroCarousel();
+    });
 }
 
+// FETCH API & INITIALISE HOME PAGE CAROUSEL
+!async function () {
+    const url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjN2JhZTIwZjJiYWQ4OTFiODk0YTc5ZjU3YjQwYWY3MyIsIm5iZiI6MTc4NzczNDc4OS45NzQwMDAyLCJzdWIiOiI2YThlYWIwNTY3ZDVlZTMyYmNiNGY1MTAiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.puYjgDGBYFueOCi84hXL0WF7k6X7BYO56f4f6rekRWw'
+        }
+    };
 
-//INITIALISE ON DOM CONTENT LOADED
+    try {
+        let response = await fetch(url, options);
+        let data = await response.json();
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-        //CALL API TO GET INITIAL MOVIES DATA
+        console.log(data);
+
+        // Map TMDB API results array into Movie object instances
+        loadedMovies = data.results.map(item => {
+            let title = item.title;
+            let overview = item.overview;
+            let releaseDate = item.release_date;
+            let rating = item.vote_average ? item.vote_average.toFixed(1) : "N/A";
+            let image = item.poster_path 
+                ? "https://image.tmdb.org/t/p/w500" + item.poster_path 
+                : "assets/images/elementor-placeholder-image.png";
+            let backdrop = item.backdrop_path
+                ? "https://image.tmdb.org/t/p/w1280" + item.backdrop_path
+                : image;
+
+            return new Movie(title, overview, releaseDate, image, backdrop, rating);
+        });
+
+        // Initialise Home Page Carousel after movies are loaded
         initialisePopularCarousel();
 
-        new MovieGrid();
-
-        initialiseGenreScrolling();
-
+    } catch (error) {
+        console.error("Error fetching popular movies for carousel:", error);
     }
-);
+}();
