@@ -109,3 +109,4 @@ function initialisePopularCarousel() {
         console.error("Error fetching popular movies for carousel:", error);
     }
 }();
+
