@@ -209,7 +209,7 @@ function renderPopularCarousel() {
                         >
                             <img
                                 class="popular-card-image"
-                                src="${movie.image}"
+                                src="${movie.backdrop}"
                                 alt="${title}"
                                 loading="lazy"
                             >
