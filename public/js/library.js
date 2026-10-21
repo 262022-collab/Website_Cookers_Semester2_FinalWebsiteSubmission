@@ -1,9 +1,20 @@
+// Show toast message when item is added to favourites (Leah)
+function showToast(msg) {
+    const toastBody = document.getElementById("favToastMsg");
+    toastBody.textContent = msg;
+
+    const toast = document.getElementById("favToast");
+    
+    bootstrap.Toast.getOrCreateInstance(toast).show();
+}
+
 class Movie {
-    constructor(_title, _overview, _releaseDate, _image, _genres = []) {
+    constructor(_title, _overview, _releaseDate, _image, _id, _genres = []) { //(added id-leah)
         this.title = _title;
         this.overview = _overview;
         this.releaseDate = _releaseDate;
         this.image = _image;
+        this.id = _id;
         this.genres = _genres; // Array of genre names like ["Action", "Thriller"]
     }
 }
@@ -96,10 +107,13 @@ class MovieGrid {
             }
             return;
         }
+        
+        const saved = JSON.parse(localStorage.getItem("favourites") || "[]"); // Reads the saved list once (leah)
 
         this.grid.innerHTML = visible.map(movie => {
             const releaseYear = movie.releaseDate ? movie.releaseDate.split("-")[0] : "N/A";
             const displayGenres = movie.genres.length > 0 ? movie.genres.join(", ") : "General";
+            const isSaved = saved.some(m => m.id === movie.id); // (leah added)
 
             return `
                 <div class="col">
@@ -112,7 +126,7 @@ class MovieGrid {
                             <p class="card-text text-muted small mb-3">${releaseYear} • ${displayGenres}</p>
                             <div class="d-grid gap-2 mt-auto">
                                 <a href="#" class="btn btnWN btn-sm fw-bold">Watch Now</a>
-                                <button type="button" class="btn btn-outline-secondary btn-sm">Add to Favourites</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm favouritesBtn" data-id="${movie.id}">${isSaved ? "Remove" : "Add to Favourites"}</button>
                             </div>
                         </div>
                     </div>
@@ -141,6 +155,30 @@ class MovieGrid {
         if (this.showMoreButton) {
             this.showMoreButton.addEventListener("click", () => this.showMore());
         }
+
+        this.grid.addEventListener("click", event => {
+            const button = event.target.closest(".favouritesBtn");
+            if(!button) return;
+
+        const movieId = Number(button.dataset.id);
+        const movie = this.movies.find(m => m.id === movieId);
+        
+        const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+        
+        const alreadyAdded = favourites.some(f => f.id === movie.id); // (toast notification when movie added to favourites)
+        if(!alreadyAdded) {
+            favourites.push(movie);
+            localStorage.setItem("favourites", JSON.stringify(favourites));
+            button.textContent = "Remove"
+            showToast("Added to Favourites");
+
+        } else {
+           const kept = favourites.filter(f => f.id !== movie.id) ;
+           localStorage.setItem("favourites", JSON.stringify(kept));
+            button.textContent = "Add to Favourites"
+            showToast("Removed from Favourites")
+        }
+        }); // <<
 
         const genreList = document.getElementById("genreList");
         if (genreList) {
@@ -196,11 +234,14 @@ class MovieGrid {
                 ? "https://image.tmdb.org/t/p/w200" + item.poster_path 
                 : "assets/images/elementor-placeholder-image.png";
 
+            let id = item.id;    // (leah - added id for favourites functionality)
+
             // Map genre_ids from API to actual names
             let genres = (item.genre_ids || []).map(id => genreMap[id]).filter(Boolean);
 
-            return new Movie(title, overview, releaseDate, image, genres);
+            return new Movie(title, overview, releaseDate, image, id, genres); // (leah - added id to list)
         });
+
 
         // Initialise Library Components with API Data
         new MovieGrid(loadedMovies);
