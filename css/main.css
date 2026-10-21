@@ -686,41 +686,6 @@ a {
     transform: translateY(-3px);
 }
 
-/* =========================================================
-   OLD HOME PAGE GRID CSS (COMMENTED OUT AS REQUESTED)
-   =========================================================
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
-    margin: 59px 27px 0;
-}
-
-.grid-movie {
-    min-width: 0;
-    cursor: pointer;
-}
-
-.grid-movie-image {
-    width: 100%;
-    aspect-ratio: 0.77;
-    object-fit: cover;
-    display: block;
-    border-radius: 7px;
-    background: var(--placeholder);
-}
-
-.grid-movie-title {
-    max-width: 150px;
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-========================================================= */
-
 /* RESPONSIVE MEDIA QUERIES */
 @media (max-width: 767px) {
     .hero-copy p { font-size: 13px; }
