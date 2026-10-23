@@ -128,13 +128,53 @@
                 </div>
             </div>
         </section>
+
+        <!-- TOP RATED MOVIE REVIEWS -->
+        <section class="latest-reviews-section">
+            <div class="container-fluid px-3 px-md-4">
+                <h2 class="section-title">Top Rated Movie Reviews</h2>
+                <div class="latest-reviews-list" id="latestReviewsList" role="region" aria-label="Top rated movie reviews"
+                    tabindex="0">
+                    <p class="latest-reviews-status" role="status">
+                        Loading top rated movie reviews...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- UPCOMING MOVIES / CAROUSEL -->
+        <section class="upcoming-section">
+            <div class="container-fluid px-3 px-md-4">
+                <h2 class="section-title">Upcoming movies</h2>
+
+                <div class="movie-carousel carousel slide" id="upcomingCarousel">
+                    <button class="carousel-arrow carousel-prev" id="upcomingPrev" type="button"
+                        data-bs-target="#upcomingCarousel" data-bs-slide="prev" aria-label="Previous upcoming movies"
+                        hidden>
+                        ‹
+                    </button>
+
+                    <div class="carousel-inner" id="upcomingCarouselInner">
+                        <p class="upcoming-status" role="status">Loading upcoming movies...</p>
+                    </div>
+
+                    <button class="carousel-arrow carousel-next" id="upcomingNext" type="button"
+                        data-bs-target="#upcomingCarousel" data-bs-slide="next" aria-label="Next upcoming movies"
+                        hidden>
+                        ›
+                    </button>
+                </div>
+            </div>
+        </section>        
     </main>
 
     <footer class="site-footer bg-black text-white text-center py-3">
         <p class="m-0 small">&copy; Declan Landman - Movie Wireframe</p>
     </footer>
 
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/500fe0dc20.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
 </body>
 
