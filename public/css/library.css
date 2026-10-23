@@ -1,0 +1,113 @@
+:root{
+/*colours*/
+--white : #e5f9f2;
+--darkblue: rgb(0, 1, 18);
+--blue: #0e154a;
+--lightblue: #00418c;
+--orange: #FF6A00;
+--muted-white: rgba(229, 249, 242, 0.689);
+
+/*text*/
+--heading-text: var(--orange);
+--page-text: var(--white);
+
+/*backgrounds*/
+--bg-gradient:  linear-gradient(var(--darkblue), var(--blue));
+
+/*layout*/
+--gap: 12px;
+--radius: 16px;
+
+/*fonts*/
+--font-heading: "Anton", sans-serif;
+--font-body: "Mulish", sans-serif;
+}
+
+body{
+font-family: var(--font-body);
+color: var(--page-text);
+background: var(--bg-gradient);
+background-repeat: no-repeat;
+min-height: 100vh;
+}
+
+h1, h2, h3{
+font-family: var(--font-heading);
+color: var(--heading-text);
+}
+
+.genre-scroll-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.genre-scroll {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 1px 0 4px;
+}
+
+.genre-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.genre-scroll-control {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 33px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: var(--white);
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.genre-scroll-control:hover {
+    color: var(--orange);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.genre-scroll-control[hidden] {
+    display: none;
+}
+
+.genre-list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 16px;
+    width: max-content;
+    min-width: 100%;
+}
+
+.genre-button {
+    flex: 0 0 auto;
+    padding: 6px 20px;
+    border: 1px solid var(--white);
+    background: var(--darkblue);
+    color: var(--orange);
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.genre-button:hover,
+.genre-button.active {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--white);
+}
