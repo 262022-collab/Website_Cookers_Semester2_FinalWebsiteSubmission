@@ -1,7 +1,7 @@
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
-	signOut
+	signOut, sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
 import { auth } from "./firebase-config.js";
@@ -17,6 +17,8 @@ const loginEmailInput = document.getElementById("email-input-login");
 const loginPasswordInput = document.getElementById("password-input-login");
 const signUpMessage = document.getElementById("signUpMessage");
 const loginMessage = document.getElementById("loginMessage");
+const rememberCheckbox = document.getElementById("remember-checkbox");
+const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 
 loginBtn.addEventListener("click", () => {
 	container.classList.remove("right-panel-active");
@@ -54,6 +56,10 @@ function getFriendlyErrorMessage(errorCode) {
 		friendlyMessage = "Please enter a valid email address.";
 	}else if(errorCode === "auth/too-many-requests"){
 		friendlyMessage = "Too many attempts. Please wait a moment and try again.";
+	}else if (errorCode === "auth/missing-email"){
+		friendlyMessage = "Please enter your email address.";
+	}else if (errorCode === "auth/user-not-found"){
+		friendlyMessage = "No account was found with those details.";
 	}
 
 	return friendlyMessage;
@@ -85,6 +91,8 @@ async function handleLogin(userEmail, userPassword){
 	.then(function (userCredential) {
 		console.log("Logged in as: " + userCredential.user.email);
 
+		rememberEmail(userCredential.user.email);
+
 		window.location.href = "index.html";
 	})
 	.catch(function(error){
@@ -93,3 +101,38 @@ async function handleLogin(userEmail, userPassword){
 		showMessage(loginMessage, friendlyMessage, "error");
 	});
 }
+
+function rememberEmail(userEmail) {
+	if(rememberCheckbox.checked === true) {
+		localStorage.setItem("savedEmail", userEmail);
+	} else {
+		localStorage.removeItem("savedEmail");
+	}
+} 
+
+function loadSavedEmail () {
+	let savedEmail = localStorage.getItem("savedEmail");
+
+	if (savedEmail !== null) {
+		loginEmailInput.value = savedEmail;
+		rememberCheckbox.checked = true;
+	}
+}
+loadSavedEmail();
+
+function forgotPassword() {
+	if(loginEmailInput.value.trim() === ""){
+		showMessage(loginMessage, "Please enter email address.", "error");
+		return;
+	}
+
+	sendPasswordResetEmail(auth, loginEmailInput.value.trim())
+	.then(function () {
+		showMessage(loginMessage, "Password reset email sent.", "success");
+	})
+	.catch(function (error) {
+		console.log("Password reset error:", error.code);
+		showMessage(loginMessage, getFriendlyErrorMessage(error.code), "error");
+	});
+}
+forgotPasswordBtn.addEventListener("click", forgotPassword);
