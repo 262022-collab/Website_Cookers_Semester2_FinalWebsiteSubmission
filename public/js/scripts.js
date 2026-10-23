@@ -1,6 +1,6 @@
 // Movie Class Definition
 class Movie {
-    constructor(_title, _overview, _releaseDate, _image, _backdrop, _rating = 0) {
+    constructor(_title, _overview, _releaseDate, _image, _backdrop, _rating = "N/A") {
         this.title = _title;
         this.overview = _overview;
         this.releaseDate = _releaseDate;
@@ -10,162 +10,8 @@ class Movie {
     }
 }
 
-// Global variable to hold loaded API movies for resize re-renders
-let loadedMovies = [];
-let selectedMovieIndex = 0;
-let heroCarouselInstance;
-let queuedHeroMovieIndex;
-
-function escapeHtml(value) {
-    const entities = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        "\"": "&quot;",
-        "'": "&#39;"
-    };
-
-    return String(value).replace(/[&<>"']/g, character => entities[character]);
-}
-
-function renderHeroIndicators() {
-    const indicators = document.querySelector(".hero-indicators");
-
-    if (!indicators) {
-        return;
-    }
-
-    indicators.innerHTML = getVisiblePopularMovieIndices().map((index, position) => `
-        <button
-            type="button"
-            data-bs-target="#heroCarousel"
-            data-bs-slide-to="${position}"
-            class="${index === selectedMovieIndex ? "active" : ""}"
-            aria-current="${index === selectedMovieIndex ? "true" : "false"}"
-            data-movie-index="${index}"
-            aria-label="Show ${escapeHtml(loadedMovies[index].title)}"
-        ></button>
-    `).join("");
-
-    const activeIndicator = indicators.querySelector(".active");
-
-    if (activeIndicator) {
-        const indicatorLeft = activeIndicator.offsetLeft;
-        const indicatorRight = indicatorLeft + activeIndicator.offsetWidth;
-
-        if (indicatorLeft < indicators.scrollLeft) {
-            indicators.scrollLeft = indicatorLeft;
-        } else if (indicatorRight > indicators.scrollLeft + indicators.clientWidth) {
-            indicators.scrollLeft = indicatorRight - indicators.clientWidth;
-        }
-    }
-}
-
-function getVisiblePopularMovieIndices() {
-    const activeSlide = document.querySelector("#popularCarousel .carousel-item.active");
-
-    if (!activeSlide) {
-        return [];
-    }
-
-    return [...activeSlide.querySelectorAll(".popular-card")]
-        .map(card => Number(card.dataset.movieIndex));
-}
-
-function renderHeroCarousel() {
-    const carousel = document.getElementById("heroCarousel");
-    const inner = document.getElementById("heroCarouselInner");
-    const visibleMovieIndices = getVisiblePopularMovieIndices();
-
-    if (!carousel || !inner || visibleMovieIndices.length === 0) {
-        return;
-    }
-
-    if (heroCarouselInstance) {
-        heroCarouselInstance.dispose();
-    }
-    queuedHeroMovieIndex = undefined;
-
-    if (!visibleMovieIndices.includes(selectedMovieIndex)) {
-        selectedMovieIndex = visibleMovieIndices[0];
-    }
-
-    inner.innerHTML = visibleMovieIndices.map(index => {
-        const movie = loadedMovies[index];
-        const title = escapeHtml(movie.title);
-        const isActive = index === selectedMovieIndex;
-
-        return `
-            <div class="carousel-item${isActive ? " active" : ""}" data-movie-index="${index}">
-                <img
-                    class="hero-scene"
-                    src="${escapeHtml(movie.backdrop || movie.image)}"
-                    data-fallback-image="${escapeHtml(movie.image)}"
-                    alt="${title} backdrop"
-                >
-                <div class="hero-media-gradient"></div>
-            </div>
-        `;
-    }).join("");
-
-    renderHeroIndicators();
-    heroCarouselInstance = new bootstrap.Carousel(carousel, {
-        interval: visibleMovieIndices.length > 1 ? 7000 : false,
-        pause: false,
-        ride: visibleMovieIndices.length > 1 ? "carousel" : false,
-        touch: true,
-        wrap: true
-    });
-    updateHeroMovieDetails(selectedMovieIndex);
-}
-
-function updateHeroMovieDetails(index) {
-    selectedMovieIndex = index;
-    const visibleMovieIndices = getVisiblePopularMovieIndices();
-
-    if (loadedMovies.length === 0 || !visibleMovieIndices.includes(selectedMovieIndex)) {
-        return;
-    }
-
-    const movie = loadedMovies[selectedMovieIndex];
-    const heroCopy = document.querySelector(".hero-copy");
-    const heroTitle = document.querySelector(".hero-title");
-    const badgeText = document.getElementById("heroBadgeText");
-
-    heroTitle.textContent = movie.title;
-    heroCopy.classList.toggle("hero-copy--long-title", movie.title.length > 18);
-    badgeText.textContent = `Rating · ${movie.rating}/10`;
-
-    document.querySelectorAll(".popular-card").forEach(card => {
-        const isSelected = Number(card.dataset.movieIndex) === selectedMovieIndex;
-        card.classList.toggle("selected", isSelected);
-        card.setAttribute("aria-pressed", String(isSelected));
-    });
-
-    renderHeroIndicators();
-}
-
-function selectHeroMovie(index) {
-    const visibleMovieIndices = getVisiblePopularMovieIndices();
-    const position = visibleMovieIndices.indexOf(index);
-
-    if (position === -1 || !heroCarouselInstance) {
-        return;
-    }
-
-    const activeSlide = document.querySelector("#heroCarousel .carousel-item.active");
-
-    if (activeSlide && Number(activeSlide.dataset.movieIndex) === index) {
-        queuedHeroMovieIndex = undefined;
-        return;
-    }
-
-    queuedHeroMovieIndex = index;
-    heroCarouselInstance.to(position);
-}
-
-// Determine how many cards to show per slide based on screen width
-function getPopularCardsPerSlide() {
+// Work out how many cards fit on one slide for the screen width
+function getCardsPerSlide() {
     if (window.innerWidth < 576) {
         return 2;
     }
@@ -175,134 +21,324 @@ function getPopularCardsPerSlide() {
     return 4;
 }
 
-// Render the carousel slides dynamically using API data
-function renderPopularCarousel() {
-    const inner = document.getElementById("popularCarouselInner");
+// Turn "2026-11-12" into "12 Nov 2026"
+function formatReleaseDate(releaseDate) {
+    if (!releaseDate) return "Release date TBA";
 
-    if (!inner || loadedMovies.length === 0) {
-        return;
-    }
-
-    const cardsPerSlide = getPopularCardsPerSlide();
-    const slides = [];
-
-    for (let i = 0; i < loadedMovies.length; i += cardsPerSlide) {
-        const slideMovies = loadedMovies.slice(i, i + cardsPerSlide);
-
-        slides.push(`
-            <div class="carousel-item ${selectedMovieIndex >= i && selectedMovieIndex < i + cardsPerSlide ? "active" : ""}">
-                <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
-                    ${slideMovies.map((movie, slideIndex) => {
-                        const movieIndex = i + slideIndex;
-                        const isSelected = movieIndex === selectedMovieIndex;
-                        const title = escapeHtml(movie.title);
-
-                        return `
-                    <div class="col">
-                        <article
-                            class="popular-card${isSelected ? " selected" : ""}"
-                            data-movie-index="${movieIndex}"
-                            role="button"
-                            tabindex="0"
-                            aria-pressed="${isSelected}"
-                            aria-label="Show ${title} in hero"
-                        >
-                            <img
-                                class="popular-card-image"
-                                src="${movie.backdrop}"
-                                alt="${title}"
-                                loading="lazy"
-                            >
-                            <div class="popular-card-overlay">
-                                <h3 class="popular-card-title">${title}</h3>
-                                <div class="rating">
-                                    <span class="rating-number">${movie.rating}</span>
-                                    <span class="stars">★★★★★</span>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                `;
-                        }).join("")}
-                </div>
-            </div>
-        `);
-    }
-
-    inner.innerHTML = slides.join("");
+    return new Date(releaseDate + "T00:00:00").toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    });
 }
 
-function initialisePopularCarousel() {
-    renderPopularCarousel();
-    renderHeroCarousel();
+// POPULAR PICKS CAROUSEL & HERO CLASS
+class PopularCarousel {
+    constructor(moviesList) {
+        this.inner = document.getElementById("popularCarouselInner");
+        this.carousel = document.getElementById("popularCarousel");
+        this.heroCarousel = document.getElementById("heroCarousel");
+        this.heroInner = document.getElementById("heroCarouselInner");
+        this.heroIndicators = document.querySelector(".hero-indicators");
+        this.movies = moviesList;
+        this.selectedIndex = 0;
+        this.heroInstance = null;
 
-    const inner = document.getElementById("popularCarouselInner");
-    const carousel = document.getElementById("popularCarousel");
-    inner.addEventListener("click", event => {
-        const card = event.target.closest(".popular-card");
+        this.render();
+        this.renderHero();
+        this.bindEvents();
+    }
 
-        if (card) {
-            selectHeroMovie(Number(card.dataset.movieIndex));
+    // Get the movie numbers of the cards on the slide you can see
+    getVisibleIndexes() {
+        const cards = this.carousel.querySelectorAll(".carousel-item.active .popular-card");
+        return [...cards].map(card => Number(card.dataset.index));
+    }
+
+    render() {
+        const cardsPerSlide = getCardsPerSlide();
+        const slides = [];
+
+        for (let i = 0; i < this.movies.length; i += cardsPerSlide) {
+            const slideMovies = this.movies.slice(i, i + cardsPerSlide);
+            const isActive = this.selectedIndex >= i && this.selectedIndex < i + cardsPerSlide;
+
+            slides.push(`
+                <div class="carousel-item ${isActive ? "active" : ""}">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+                        ${slideMovies.map((movie, slideIndex) => {
+                            const movieIndex = i + slideIndex;
+                            const isSelected = movieIndex === this.selectedIndex;
+
+                            return `
+                                <div class="col">
+                                    <article class="popular-card ${isSelected ? "selected" : ""}" data-index="${movieIndex}" role="button" tabindex="0" aria-label="Show ${movie.title} in hero">
+                                        <img class="popular-card-image" src="${movie.backdrop}" alt="${movie.title}" loading="lazy">
+                                        <div class="popular-card-overlay">
+                                            <h3 class="popular-card-title">${movie.title}</h3>
+                                            <div class="rating">
+                                                <span class="rating-number">${movie.rating}</span>
+                                                <span class="stars">★★★★★</span>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            `;
+                        }).join("")}
+                    </div>
+                </div>
+            `);
         }
-    });
-    inner.addEventListener("keydown", event => {
-        const card = event.target.closest(".popular-card");
 
-        if (card && (event.key === "Enter" || event.key === " ")) {
-            event.preventDefault();
-            selectHeroMovie(Number(card.dataset.movieIndex));
+        this.inner.innerHTML = slides.join("");
+    }
+
+    // The hero shows the backdrops of the cards you can see
+    renderHero() {
+        const visible = this.getVisibleIndexes();
+        if (visible.length === 0) return;
+
+        if (!visible.includes(this.selectedIndex)) {
+            this.selectedIndex = visible[0];
         }
-    });
 
-    document.getElementById("heroCarousel").addEventListener("slid.bs.carousel", event => {
-        const activeSlide = event.target.querySelector(".carousel-item.active");
+        this.heroInner.innerHTML = visible.map(index => {
+            const movie = this.movies[index];
+            const isActive = index === this.selectedIndex;
 
-        if (activeSlide) {
-            const activeMovieIndex = Number(activeSlide.dataset.movieIndex);
-            updateHeroMovieDetails(activeMovieIndex);
+            // If the backdrop fails to load use the poster instead
+            return `
+                <div class="carousel-item ${isActive ? "active" : ""}" data-index="${index}">
+                    <img class="hero-scene" src="${movie.backdrop}" alt="${movie.title} backdrop" onerror="this.onerror = null; this.src = '${movie.image}';">
+                    <div class="hero-media-gradient"></div>
+                </div>
+            `;
+        }).join("");
 
-            if (queuedHeroMovieIndex !== undefined) {
-                const visibleMovieIndices = getVisiblePopularMovieIndices();
-                const queuedPosition = visibleMovieIndices.indexOf(queuedHeroMovieIndex);
+        this.heroIndicators.innerHTML = visible.map((index, position) => `
+            <button type="button" class="${index === this.selectedIndex ? "active" : ""}" data-bs-target="#heroCarousel" data-bs-slide-to="${position}" aria-label="Show ${this.movies[index].title}"></button>
+        `).join("");
 
-                if (queuedPosition === -1 || queuedHeroMovieIndex === activeMovieIndex) {
-                    queuedHeroMovieIndex = undefined;
-                } else {
-                    heroCarouselInstance.to(queuedPosition);
-                }
+        // Remove the old Bootstrap carousel before making a new one
+        if (this.heroInstance) {
+            this.heroInstance.dispose();
+        }
+
+        this.heroInstance = new bootstrap.Carousel(this.heroCarousel, {
+            interval: 7000,
+            ride: "carousel",
+            pause: false
+        });
+
+        this.updateHeroDetails();
+    }
+
+    // Show the selected movie's title & rating and highlight its card
+    updateHeroDetails() {
+        const movie = this.movies[this.selectedIndex];
+
+        document.querySelector(".hero-title").textContent = movie.title;
+        document.getElementById("heroBadgeText").textContent = `Rating · ${movie.rating}/10`;
+
+        const heroCopy = document.querySelector(".hero-copy");
+        if (movie.title.length > 18) {
+            heroCopy.classList.add("hero-copy--long-title");
+        }
+        else {
+            heroCopy.classList.remove("hero-copy--long-title");
+        }
+
+        document.querySelectorAll(".popular-card").forEach(card => {
+            if (Number(card.dataset.index) === this.selectedIndex) {
+                card.classList.add("selected");
             }
-        }
-    });
-    document.getElementById("heroCarouselInner").addEventListener("error", event => {
-        const image = event.target;
+            else {
+                card.classList.remove("selected");
+            }
+        });
+    }
 
-        if (image.matches(".hero-scene") && image.src !== image.dataset.fallbackImage) {
-            image.src = image.dataset.fallbackImage;
-        }
-    }, true);
-    carousel.addEventListener("slid.bs.carousel", () => {
-        const visibleMovieIndices = getVisiblePopularMovieIndices();
+    // Slide the hero to the card that was picked
+    selectMovie(card) {
+        const position = this.getVisibleIndexes().indexOf(Number(card.dataset.index));
+        if (position === -1) return;
 
-        if (visibleMovieIndices.length === 0) {
+        this.heroInstance.to(position);
+    }
+
+    bindEvents() {
+        this.inner.addEventListener("click", event => {
+            const card = event.target.closest(".popular-card");
+            if (!card) return;
+
+            this.selectMovie(card);
+        });
+
+        this.inner.addEventListener("keydown", event => {
+            const card = event.target.closest(".popular-card");
+            if (!card) return;
+
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                this.selectMovie(card);
+            }
+        });
+
+        // Update the title & rating when the hero slides
+        this.heroCarousel.addEventListener("slid.bs.carousel", () => {
+            const activeSlide = this.heroCarousel.querySelector(".carousel-item.active");
+            this.selectedIndex = Number(activeSlide.dataset.index);
+            this.updateHeroDetails();
+        });
+
+        // Rebuild the hero when new cards slide into view
+        this.carousel.addEventListener("slid.bs.carousel", () => this.renderHero());
+
+        window.addEventListener("resize", () => {
+            this.render();
+            this.renderHero();
+        });
+    }
+}
+
+// UPCOMING MOVIES CAROUSEL CLASS
+class UpcomingCarousel {
+    constructor(moviesList) {
+        this.inner = document.getElementById("upcomingCarouselInner");
+        this.movies = moviesList;
+
+        this.render();
+        this.bindEvents();
+    }
+
+    // Show a message instead of the movies
+    showMessage(msg) {
+        this.inner.innerHTML = `<p class="upcoming-status" role="status">${msg}</p>`;
+        this.toggleArrows(false);
+    }
+
+    toggleArrows(show) {
+        document.querySelectorAll("#upcomingCarousel .carousel-arrow").forEach(arrow => {
+            arrow.hidden = !show;
+        });
+    }
+
+    render() {
+        if (this.movies.length === 0) {
+            this.showMessage("No upcoming movies are available right now.");
             return;
         }
 
-        if (!visibleMovieIndices.includes(selectedMovieIndex)) {
-            selectedMovieIndex = visibleMovieIndices[0];
+        const cardsPerSlide = getCardsPerSlide();
+        const slides = [];
+
+        for (let i = 0; i < this.movies.length; i += cardsPerSlide) {
+            const slideMovies = this.movies.slice(i, i + cardsPerSlide);
+
+            slides.push(`
+                <div class="carousel-item ${i === 0 ? "active" : ""}">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+                        ${slideMovies.map(movie => `
+                            <div class="col">
+                                <article class="upcoming-card">
+                                    <img class="popular-card-image" src="${movie.backdrop}" alt="${movie.title}" loading="lazy">
+                                    <div class="popular-card-overlay">
+                                        <h3 class="popular-card-title">${movie.title}</h3>
+                                        <p class="upcoming-release-date">Releases ${formatReleaseDate(movie.releaseDate)}</p>
+                                    </div>
+                                </article>
+                            </div>
+                        `).join("")}
+                    </div>
+                </div>
+            `);
         }
 
-        renderHeroCarousel();
-    });
+        this.inner.innerHTML = slides.join("");
 
-    window.addEventListener("resize", () => {
-        renderPopularCarousel();
-        renderHeroCarousel();
-    });
+        // Only show the arrows if there is more than one slide
+        this.toggleArrows(slides.length > 1);
+    }
+
+    bindEvents() {
+        window.addEventListener("resize", () => this.render());
+    }
 }
 
-// FETCH API & INITIALISE HOME PAGE CAROUSEL
+// LATEST MOVIE REVIEWS CLASS
+class LatestReviews {
+    constructor(reviewsList) {
+        this.list = document.getElementById("latestReviewsList");
+        this.reviews = reviewsList;
+
+        this.render();
+    }
+
+    // Show a message instead of the reviews
+    showMessage(msg) {
+        this.list.innerHTML = `<p class="latest-reviews-status" role="status">${msg}</p>`;
+    }
+
+    // Turn a TMDB rating out of 10 into 5 stars, e.g. 8 = ★★★★☆
+    getStars(rating) {
+        const starCount = rating ? Math.round(rating / 2) : 0;
+        return "★".repeat(starCount) + "☆".repeat(5 - starCount);
+    }
+
+    // Show how long ago the review was written, e.g. "2 hours ago"
+    getTimeAgo(createdAt) {
+        if (!createdAt) return "Date unavailable";
+
+        const hours = Math.max(1, Math.floor((new Date() - new Date(createdAt)) / 3600000));
+        if (hours < 24) {
+            return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+        }
+
+        const days = Math.floor(hours / 24);
+        if (days < 30) {
+            return `${days} day${days === 1 ? "" : "s"} ago`;
+        }
+
+        return new Date(createdAt).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+    }
+
+    render() {
+        if (this.reviews.length === 0) {
+            this.showMessage("No movie reviews are available right now.");
+            return;
+        }
+
+        this.list.innerHTML = this.reviews.map(review => {
+            const ratingLabel = review.rating ? `Rating: ${review.rating} out of 10` : "Not rated";
+
+            return `
+                <article class="latest-review-card">
+                    <div class="latest-review-meta">
+                        <span class="latest-review-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                        <span class="latest-review-author">${review.author}</span>
+                    </div>
+                    <div class="latest-review-title-row">
+                        <h3 class="latest-review-movie-title">${review.movieTitle}</h3>
+                        <span class="latest-review-rating" role="img" aria-label="${ratingLabel}">${this.getStars(review.rating)}</span>
+                    </div>
+                    <p class="latest-review-content">"${review.content}"</p>
+                    <p class="latest-review-date">${this.getTimeAgo(review.createdAt)}</p>
+                </article>
+            `;
+        }).join("");
+    }
+}
+
+// FETCH API & INITIALISE HOME PAGE
 !async function () {
-    const url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+    const popularUrl = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+    const topRatedUrl = 'https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1';
+    // Same as TMDB's /movie/upcoming list, but with a minimum release date of today
+    const today = new Date().toLocaleDateString("en-CA"); // "YYYY-MM-DD"
+    const upcomingUrl = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false'
+        + '&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2%7C3'
+        + `&release_date.gte=${today}`;
+
     const options = {
         method: 'GET',
         headers: {
@@ -311,32 +347,94 @@ function initialisePopularCarousel() {
         }
     };
 
+    // Map a TMDB API result into a Movie object instance
+    const createMovie = item => {
+        let title = item.title;
+        let overview = item.overview;
+        let releaseDate = item.release_date;
+        let rating = item.vote_average ? item.vote_average.toFixed(1) : "N/A";
+        let image = item.poster_path
+            ? "https://image.tmdb.org/t/p/w500" + item.poster_path
+            : "assets/images/elementor-placeholder-image.png";
+        let backdrop = item.backdrop_path
+            ? "https://image.tmdb.org/t/p/w1280" + item.backdrop_path
+            : image;
+
+        return new Movie(title, overview, releaseDate, image, backdrop, rating);
+    };
+
+    // Popular picks
     try {
-        let response = await fetch(url, options);
-        let data = await response.json();
+        const popularResponse = await fetch(popularUrl, options).then(res => res.json());
+        const popularMovies = popularResponse.results.map(createMovie);
 
-        console.log(data);
-
-        // Map TMDB API results array into Movie object instances
-        loadedMovies = data.results.map(item => {
-            let title = item.title;
-            let overview = item.overview;
-            let releaseDate = item.release_date;
-            let rating = item.vote_average ? item.vote_average.toFixed(1) : "N/A";
-            let image = item.poster_path 
-                ? "https://image.tmdb.org/t/p/w500" + item.poster_path 
-                : "assets/images/elementor-placeholder-image.png";
-            let backdrop = item.backdrop_path
-                ? "https://image.tmdb.org/t/p/w1280" + item.backdrop_path
-                : image;
-
-            return new Movie(title, overview, releaseDate, image, backdrop, rating);
-        });
-
-        // Initialise Home Page Carousel after movies are loaded
-        initialisePopularCarousel();
+        new PopularCarousel(popularMovies);
 
     } catch (error) {
-        console.error("Error fetching popular movies for carousel:", error);
+        console.error("Error fetching popular movies from TMDB:", error);
+    }
+
+    // Latest movie reviews
+    try {
+        const topRatedResponse = await fetch(topRatedUrl, options).then(res => res.json());
+
+        // Most popular top rated movies first
+        const topRatedMovies = topRatedResponse.results
+            .sort((a, b) => b.popularity - a.popularity)
+            .slice(0, 8);
+
+        // Fetch the reviews for each movie at the same time
+        const reviewResponses = await Promise.all(
+            topRatedMovies.map(movie =>
+                fetch(`https://api.themoviedb.org/3/movie/${movie.id}/reviews?language=en-US&page=1`, options)
+                    .then(res => res.json())
+            )
+        );
+
+        // Take the newest review from each movie & only keep the top 4
+        const reviews = [];
+        reviewResponses.forEach((reviewResponse, index) => {
+            const movieReviews = reviewResponse.results || [];
+            if (movieReviews.length === 0) return;
+
+            const newest = movieReviews.sort((a, b) => b.created_at.localeCompare(a.created_at))[0];
+
+            reviews.push({
+                movieTitle: topRatedMovies[index].title,
+                author: newest.author_details?.username || newest.author || "Movie fan",
+                content: newest.content || "No written review was provided.",
+                rating: newest.author_details?.rating,
+                createdAt: newest.created_at
+            });
+        });
+
+        new LatestReviews(reviews.slice(0, 4));
+
+    } catch (error) {
+        console.error("Error fetching movie reviews from TMDB:", error);
+        document.getElementById("latestReviewsList").innerHTML =
+            `<p class="latest-reviews-status" role="status">Movie reviews could not be loaded. Please try again later.</p>`;
+    }
+
+    // Upcoming movies
+    try {
+        const upcomingResponse = await fetch(upcomingUrl, options).then(res => res.json());
+
+        // release_date.gte matches any theatrical release, which can differ from
+        // the primary release_date in the results, so check again, soonest first
+        const upcomingMovies = upcomingResponse.results
+            .filter(item => item.release_date && item.release_date >= today)
+            .sort((a, b) => a.release_date.localeCompare(b.release_date))
+            .map(createMovie);
+
+        new UpcomingCarousel(upcomingMovies);
+
+    } catch (error) {
+        console.error("Error fetching upcoming movies from TMDB:", error);
+        document.getElementById("upcomingCarouselInner").innerHTML =
+            `<p class="upcoming-status" role="status">Upcoming movies could not be loaded. Please try again later.</p>`;
+        document.querySelectorAll("#upcomingCarousel .carousel-arrow").forEach(arrow => {
+            arrow.hidden = true;
+        });
     }
 }();
