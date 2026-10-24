@@ -23,21 +23,21 @@ const html = favourites.map(movie => {
     const displayGenres = movie.genres.length > 0 ? movie.genres.join(", ") : "General";
     return `
     <div class="col">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="p-2">
-                            <img src="${movie.image}" class="card-img-top rounded moviePost" alt="${movie.title}" loading="lazy">
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-truncate">${movie.title}</h5>
-                            <p class="card-text text-muted small mb-3">${releaseYear} • ${displayGenres}</p>
-                            <div class="d-grid gap-2 mt-auto">
-                                <a href="#" class="btn btnWN btn-sm fw-bold">Watch Now</a>
-                                <button type="button" class="btn btn-outline-secondary btn-sm removeBtn" data-id="${movie.id}">Remove</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-}).join("")
+        <div class="card h-100 shadow-sm"> <!-- Removed border-0 -->
+            <div class="p-2">
+                <img src="${movie.image}" class="card-img-top rounded moviePost" alt="${movie.title}" loading="lazy">
+            </div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-truncate text-white">${movie.title}</h5> <!-- Added text-white -->
+                <p class="card-text text-white-50 small mb-3">${releaseYear} • ${displayGenres}</p> <!-- Added text-white-50 and bullet -->
+                <div class="d-grid gap-2 mt-auto">
+                    <a href="#" class="btn btnWN btn-sm fw-bold">Watch Now</a>
+                    <button type="button" class="btn btnFav btn-sm removeBtn" data-id="${movie.id}">Remove</button> <!-- Changed class to btnFav -->
+                </div>
+            </div>
+        </div>
+    </div>`;
+}).join("");
 grid.innerHTML = html;
 }
 

@@ -105,7 +105,11 @@ color: var(--heading-text);
     transition: all 0.2s ease;
 }
 
-.genreBut:hover,
+.genreBut:hover {
+    border-color: var(--orange) !important;
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.6) !important;
+    color: var(--white);
+}
 .genreBut.active {
     background: var(--orange);
     color: var(--white);
@@ -115,17 +119,19 @@ color: var(--heading-text);
 .card {
     background-color: var(--bg-gradient) !important;
     border-radius: var(--radius) !important;
-    border: 3px solid var(--orange) !important;
-    transition: transform 0.2s ease-in-out;
+    border: 3px solid rgba(255, 255, 255, 0.1) !important;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
 .card:hover {
     transform: translateY(-5px);
+    border-color: var(--orange) !important;
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.6) !important;
 }
 
 .btnWN {
     padding: 10px 24px;
-    font-family: var(--fontBody);
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 600;
     color: var(--white) !important;
@@ -147,10 +153,10 @@ color: var(--heading-text);
     background-color: #FF8400;
 }
 
-/* Secondary Button Style (Default: #070B28, Hover: #070B2893, Active: #FF8400 with 1px solid orange border) */
+
 .btnFav {
     padding: 10px 20px;
-    font-family: var(--fontBody);
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 600;
     color: var(--orange) !important;
@@ -164,12 +170,53 @@ color: var(--heading-text);
 }
 
 .btnFav:hover {
-    background-color: #070b2893;
+    background-color: var(--white);
     color: var(--orange) !important;
+    border: 1px solid var(--orange);
 }
 
 .btnFav:active {
     background-color: #FF8400;
     color: var(--white) !important;
     border: 1px solid var(--orange);
+}
+
+.card-title {
+    color: var(--white) !important;
+    font-family: var(--fontHeading);
+}
+
+.card-text {
+    color: var(--muted-white) !important;
+}
+
+.showMoreWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.showMoreButton {
+    width: 320px;
+    height: 52px;
+    border: 1px solid var(--orange);
+    background: var(--orange);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-family: var(--fontBody);
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: var(--radius);
+    cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.showMoreButton:hover {
+    background-color: var(--white);
+    color: var(--orange);
+
 }

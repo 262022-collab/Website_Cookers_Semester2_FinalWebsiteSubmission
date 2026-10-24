@@ -111,3 +111,76 @@ color: var(--heading-text);
 .libraryLink:hover{
     color: var(--orange);
 }
+
+.card {
+    background-color: var(--bg-gradient) !important;
+    border-radius: var(--radius) !important;
+    border: 3px solid rgba(255, 255, 255, 0.1) !important;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--orange) !important;
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.6) !important;
+}
+
+.btnWN {
+    padding: 10px 24px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white) !important;
+    background-color: var(--orange);
+    border-radius: var(--radius);
+    border: 1px solid var(--white);
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.btnWN:hover {
+    background-color: #E44400;
+    color: var(--white) !important;
+}
+
+.btnWN:active {
+    background-color: #FF8400;
+}
+
+.btnFav {
+    padding: 10px 20px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--orange) !important;
+    background-color: #070B28;
+    border-radius: var(--radius);
+    border: 1px solid var(--white);
+    text-transform: capitalize;
+    cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.btnFav:hover {
+    background-color: var(--white);
+    color: var(--orange) !important;
+    border: 1px solid var(--orange);
+}
+
+.btnFav:active {
+    background-color: #FF8400;
+    color: var(--white) !important;
+    border: 1px solid var(--orange);
+}
+
+.card-title {
+    color: var(--white) !important;
+    font-family: var(--fontHeading);
+}
+
+.card-text {
+    color: var(--muted-white) !important;
+}
