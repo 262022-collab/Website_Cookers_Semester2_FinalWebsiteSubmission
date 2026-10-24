@@ -9,44 +9,51 @@
 
     <title>Movie Directory</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/library.css">
 </head>
 
 <body class="bg-light">
 
-    <!-- NAVIGATION -->
-    <nav class="navbar navbar-expand-lg bg-black navbar-dark border-orange px-4 py-2 mb-4">
+  <!-- NAVIGATION -->
+     <header class="site-header">
+    <nav class="navbar site-nav navbar-dark navbar-expand-lg px-4 py-2 mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand text-orange fw-bold fs-3" href="../index.html">Website Cookers</a>
+            <a class="navbar-brand" href="../index.html">
+                <img src="../assets/WebsiteCookers_Logo.png" alt="Website Cookers" height="60"> 
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3 pe-3">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center gap-3 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="../index.html">Home</a>
+                        <a class="nav-link" href="../index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active text-white" href="../pages/library.html">Library</a>
+                        <a class="nav-link active" href="../pages/library.html">Library</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="../pages/favourites.html">My Favourites</a>
+                        <a class="nav-link" href="../pages/favourites.html">Favourites</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" id="authLink" href="../sign_in.html">Sign In</a>
+                        <a class="nav-link" id="authLink" href="../sign_in.html">Sign In</a>
                     </li>
                 </ul>
 
-                <form class="d-flex gap-2" role="search">
-                    <input class="form-control bg-dark-input px-3" type="search" placeholder="Search library..." aria-label="Search">
-                    <button class="btn bg-orange fw-bold px-4" type="submit">Search</button>
+                <form class="nav-search d-flex align-items-center" role="search">
+                    <input class="nav-search-input" type="search" placeholder="Search..." aria-label="Search">
+                    <button class="nav-search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
         </div>
     </nav>
+    </header>
 
     <!-- Main Content (Library Grid & Genre Filters) -->
     <main class="container mb-5">
@@ -118,6 +125,7 @@
         </div>
     </div>
 
+    <script src="https://kit.fontawesome.com/500fe0dc20.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../js/nav-auth.js"></script>
     <!-- (Leah) Please do not delete, will be added when pages are done 

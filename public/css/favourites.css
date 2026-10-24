@@ -44,6 +44,7 @@ color: var(--heading-text);
 .site-nav .nav-link{
     color: var(--white) !important;
     text-shadow: 0 4px 8px black;
+    white-space: nowrap;
 }
 
 .site-nav .nav-link:hover{
@@ -57,7 +58,7 @@ color: var(--heading-text);
     text-underline-offset: 4px;
 }
 
-@media (min-width: 575px) {
+@media (min-width: 992px) {
     .site-nav .navbar-brand, .site-nav .nav-search{
         width: 300px;
     }
