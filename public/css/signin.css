@@ -34,18 +34,7 @@ body {
 	margin-bottom: 1rem;
 }
 
-.link {
-    font-family: "Mulish", sans-serif;
-    font-weight: 100;
-	color: rgba(229, 249, 242, 0.7);
-	font-size: 0.9rem;
-	margin: 1rem 0;
-	text-decoration: none;
-}
 
-.link:hover{
-    color: #C9641C;
-}
 
 .container {
 	background-color: rgb(0, 1, 18);
@@ -265,9 +254,14 @@ body {
 
 .remember-row label{
 	font-family: "Mulish", sans-serif;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 100;
 	color: rgba(229, 249, 242, 0.7);
+}
+
+#signUpForm #signUpMessage{
+	margin: 0;
+	min-height: 0;
 }
 
 #loginForm #loginMessage {
@@ -277,10 +271,20 @@ body {
 
 #loginForm .remember-row {
 	margin: 0.3rem 0 0;
+	align-self: flex-start;
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
 }
 
 #loginForm .link {
 	margin: 0.5rem 0 0;
+	align-self: flex-start;
+	padding: 0;
+}
+
+#loginForm .remember-row input{
+	margin: 0;
 }
 
 #loginForm .btn {
@@ -292,9 +296,14 @@ button.link {
 	border: none;
     font-family: "Mulish", sans-serif;
     font-weight: 100;
-	color: rgba(229, 249, 242, 0.7);
-	font-size: 0.9rem;
+	color:  #FF6A00;
+	font-size: 14px;
 	margin: 0.5rem 0;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.link:hover{
+    text-decoration: underline;
+	text-underline-offset: 2px;
 }
