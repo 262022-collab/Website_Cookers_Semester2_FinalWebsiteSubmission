@@ -4,7 +4,7 @@ const movieId = params.get("id");
 function displayMovie(movie) {
     document.getElementById("movieTitle").textContent = movie.title;
     document.getElementById("movieDescription").textContent = movie.overview;
-    document.getElementById("ratingNumber").textContent = movie.vote_average.toFixed(1);
+    document.getElementById("ratingNumber").textContent = movie.vote_average ? movie.vote_average.toFixed(1) : "N/A";
 
 
     if (movie.backdrop_path) {

@@ -118,14 +118,16 @@ class MovieGrid {
             return `
                 <div class="col">
                     <div class="card h-100 shadow-sm border-0">
-                        <div class="p-2">
+                        <a href="individual.html?id=${movie.id}" class="p-2">
                             <img src="${movie.image}" class="card-img-top rounded moviePost" alt="${movie.title}" loading="lazy">
-                        </div>
+                        </a>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-truncate">${movie.title}</h5>
+                            <h5 class="card-title text-truncate">
+                                <a href="individual.html?id=${movie.id}">${movie.title}</a>
+                            </h5>
                             <p class="card-text text-muted small mb-3">${releaseYear} • ${displayGenres}</p>
                             <div class="d-grid gap-2 mt-auto">
-                                <a href="#" class="btn btnWN btn-sm fw-bold">Watch Now</a>
+                                <a href="individual.html?id=${movie.id}" class="btn btnWN btn-sm fw-bold">Watch Now</a>
                                 <button type="button" class="btn btnFav btn-sm favouritesBtn" data-id="${movie.id}">${isSaved ? "Remove" : "Add to Favourites"}</button>
                             </div>
                         </div>

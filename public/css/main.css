@@ -186,7 +186,8 @@ a {
     pointer-events: none;
 }
 
-.hero-copy button {
+.hero-copy button,
+.hero-copy a {
     pointer-events: auto;
 }
 
@@ -615,7 +616,7 @@ a {
 
 /* Upcoming Movies Section */
 .upcoming-card {
-    cursor: default;
+    cursor: pointer;
 }
 
 .upcoming-release-date {
@@ -671,6 +672,14 @@ a {
     align-items: center;
     gap: 16px;
     margin-bottom: 18px;
+}
+
+.latest-review-link {
+    display: block;
+}
+
+.latest-review-card {
+    cursor: pointer;
 }
 
 /* Grey circle with a Font Awesome person icon */
@@ -908,4 +917,83 @@ a {
     .genre-list { gap: 12px; }
     .genre-button { width: 100px; flex-basis: 100px; }
     .show-more-button { width: 85%; height: 55px; }
+}
+
+/* Footer */
+.site-footer {
+    background-color: #000000;
+    padding: 50px 80px;
+    font-size: 17px;
+    color: #fff;
+}
+
+.site-footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-row + .footer-row {
+    margin-top: 40px;
+}
+
+.copyright {
+    margin: 0;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 40px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background-color: #f0f0f5;
+    border-radius: 6px;
+}
+
+.social-icons a:hover {
+    background-color: #cdcdd5;
+}
+
+@media (max-width: 800px) {
+    .site-footer {
+        padding: 40px 20px;
+    }
+    .movie-layout {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-row,
+    .footer-right {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
 }

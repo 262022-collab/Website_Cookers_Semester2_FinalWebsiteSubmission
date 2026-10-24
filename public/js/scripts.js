@@ -1,6 +1,7 @@
 // Movie Class Definition
 class Movie {
-    constructor(_title, _overview, _releaseDate, _image, _backdrop, _rating = "N/A") {
+    constructor(_id, _title, _overview, _releaseDate, _image, _backdrop, _rating = "N/A") {
+        this.id = _id;
         this.title = _title;
         this.overview = _overview;
         this.releaseDate = _releaseDate;
@@ -72,7 +73,7 @@ class PopularCarousel {
 
                             return `
                                 <div class="col">
-                                    <article class="popular-card ${isSelected ? "selected" : ""}" data-index="${movieIndex}" role="button" tabindex="0" aria-label="Show ${movie.title} in hero">
+                                    <article class="popular-card ${isSelected ? "selected" : ""}" data-index="${movieIndex}" role="button" tabindex="0" aria-label="Open ${movie.title} details">
                                         <img class="popular-card-image" src="${movie.backdrop}" alt="${movie.title}" loading="lazy">
                                         <div class="popular-card-overlay">
                                             <h3 class="popular-card-title">${movie.title}</h3>
@@ -139,6 +140,7 @@ class PopularCarousel {
 
         document.querySelector(".hero-title").textContent = movie.title;
         document.getElementById("heroBadgeText").textContent = `Rating · ${movie.rating}/10`;
+        document.getElementById("heroInfoLink").href = `pages/individual.html?id=${movie.id}`;
 
         const heroCopy = document.querySelector(".hero-copy");
         if (movie.title.length > 18) {
@@ -158,20 +160,18 @@ class PopularCarousel {
         });
     }
 
-    // Slide the hero to the card that was picked
-    selectMovie(card) {
-        const position = this.getVisibleIndexes().indexOf(Number(card.dataset.index));
-        if (position === -1) return;
-
-        this.heroInstance.to(position);
+    // Open the clicked movie on the individual item page
+    openMovie(card) {
+        const movie = this.movies[Number(card.dataset.index)];
+        window.location.href = `pages/individual.html?id=${movie.id}`;
     }
 
     bindEvents() {
         this.inner.addEventListener("click", event => {
             const card = event.target.closest(".popular-card");
-            if (!card) return;
+         if (!card) return;
 
-            this.selectMovie(card);
+        this.openMovie(card);
         });
 
         this.inner.addEventListener("keydown", event => {
@@ -180,7 +180,7 @@ class PopularCarousel {
 
             if (event.key === "Enter" || event.key === " ") {
                 event.preventDefault();
-                this.selectMovie(card);
+                this.openMovie(card);
             }
         });
 
@@ -240,13 +240,15 @@ class UpcomingCarousel {
                     <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
                         ${slideMovies.map(movie => `
                             <div class="col">
-                                <article class="upcoming-card">
-                                    <img class="popular-card-image" src="${movie.backdrop}" alt="${movie.title}" loading="lazy">
-                                    <div class="popular-card-overlay">
-                                        <h3 class="popular-card-title">${movie.title}</h3>
-                                        <p class="upcoming-release-date">Releases ${formatReleaseDate(movie.releaseDate)}</p>
-                                    </div>
-                                </article>
+                                <a href="pages/individual.html?id=${movie.id}">
+                                    <article class="upcoming-card">
+                                        <img class="popular-card-image" src="${movie.backdrop}" alt="${movie.title}" loading="lazy">
+                                        <div class="popular-card-overlay">
+                                            <h3 class="popular-card-title">${movie.title}</h3>
+                                            <p class="upcoming-release-date">Releases ${formatReleaseDate(movie.releaseDate)}</p>
+                                        </div>
+                                    </article>
+                                </a>
                             </div>
                         `).join("")}
                     </div>
@@ -312,18 +314,20 @@ class LatestReviews {
             const ratingLabel = review.rating ? `Rating: ${review.rating} out of 10` : "Not rated";
 
             return `
-                <article class="latest-review-card">
-                    <div class="latest-review-meta">
-                        <span class="latest-review-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
-                        <span class="latest-review-author">${review.author}</span>
-                    </div>
-                    <div class="latest-review-title-row">
-                        <h3 class="latest-review-movie-title">${review.movieTitle}</h3>
-                        <span class="latest-review-rating" role="img" aria-label="${ratingLabel}">${this.getStars(review.rating)}</span>
-                    </div>
-                    <p class="latest-review-content">"${review.content}"</p>
-                    <p class="latest-review-date">${this.getTimeAgo(review.createdAt)}</p>
-                </article>
+                <a href="pages/individual.html?id=${review.movieId}" class="latest-review-link">
+                    <article class="latest-review-card">
+                        <div class="latest-review-meta">
+                            <span class="latest-review-avatar" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                            <span class="latest-review-author">${review.author}</span>
+                        </div>
+                        <div class="latest-review-title-row">
+                            <h3 class="latest-review-movie-title">${review.movieTitle}</h3>
+                            <span class="latest-review-rating" role="img" aria-label="${ratingLabel}">${this.getStars(review.rating)}</span>
+                        </div>
+                        <p class="latest-review-content">"${review.content}"</p>
+                        <p class="latest-review-date">${this.getTimeAgo(review.createdAt)}</p>
+                    </article>
+                </a>
             `;
         }).join("");
     }
@@ -360,7 +364,7 @@ class LatestReviews {
             ? "https://image.tmdb.org/t/p/w1280" + item.backdrop_path
             : image;
 
-        return new Movie(title, overview, releaseDate, image, backdrop, rating);
+        return new Movie(item.id, title, overview, releaseDate, image, backdrop, rating);
     };
 
     // Popular picks
@@ -400,6 +404,7 @@ class LatestReviews {
             const newest = movieReviews.sort((a, b) => b.created_at.localeCompare(a.created_at))[0];
 
             reviews.push({
+                movieId: topRatedMovies[index].id,
                 movieTitle: topRatedMovies[index].title,
                 author: newest.author_details?.username || newest.author || "Movie fan",
                 content: newest.content || "No written review was provided.",
