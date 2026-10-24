@@ -183,10 +183,10 @@ class MovieGrid {
         const genreList = document.getElementById("genreList");
         if (genreList) {
             genreList.addEventListener("click", event => {
-                const button = event.target.closest(".genre-button");
+                const button = event.target.closest(".genreBut");
                 if (!button) return;
 
-                document.querySelectorAll(".genre-button").forEach(item => {
+                document.querySelectorAll(".genreBut").forEach(item => {
                     item.classList.remove("active");
                 });
 
