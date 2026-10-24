@@ -199,3 +199,11 @@ color: var(--heading-text);
 .card-text {
     color: var(--muted-white) !important;
 }
+
+.toast {
+    color: #0e154a;
+}
+
+.toast-header {
+    color: #0e154a;
+}

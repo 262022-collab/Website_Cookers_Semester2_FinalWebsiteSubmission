@@ -363,3 +363,11 @@ color: var(--heading-text);
         text-align: center;
     }
 }
+
+.toast {
+    color: #0e154a;
+}
+
+.toast-header {
+    color: #0e154a;
+}

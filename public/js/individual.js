@@ -1,6 +1,38 @@
 const params = new URLSearchParams(window.location.search);
 const movieId = params.get("id");
 
+// Leah - Add to favourites
+function isSaved(id) { 
+    const saved = JSON.parse(localStorage.getItem("favourites") || "[]");
+    return saved.some(m => m.id === id);
+}
+
+function toSavedMovie(movie) {
+    return {
+        title: movie.title,
+        overview: movie.overview,
+        releaseDate: movie.release_date,
+        image: movie.poster_path 
+            ? "https://image.tmdb.org/t/p/w200" + movie.poster_path 
+            : "assets/images/elementor-placeholder-image.png",
+
+        id: movie.id,
+        genres: (movie.genres || []).map(g => g.name)
+    };
+}
+
+// Show toast (added to favourites)
+function showToast(msg) {
+    document.getElementById("favToastMsg"). textContent = msg;
+    bootstrap.Toast.getOrCreateInstance(document.getElementById("favToast")).show();
+}
+
+function updateSaveButton(saved) {
+    document.getElementById("saveBtn").textContent = saved ? "Remove from Favourites" : "Add to Favourites"
+}
+// <
+
+
 function displayMovie(movie) {
     document.getElementById("movieTitle").textContent = movie.title;
     document.getElementById("movieDescription").textContent = movie.overview;
@@ -34,6 +66,26 @@ function displayMovie(movie) {
     try {
         const movie = await fetch(movieUrl, options).then(res => res.json());
         displayMovie(movie);
+        const savedMovie = toSavedMovie(movie); // > Leah - Favourites
+        updateSaveButton(isSaved(savedMovie.id)); 
+
+        document.getElementById("saveBtn").addEventListener("click", event => {
+            const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+            const alreadyAdded = favourites.some(m => m.id === savedMovie.id);
+
+            if(!alreadyAdded) {
+                favourites.push(savedMovie);
+                localStorage.setItem("favourites", JSON.stringify(favourites));
+                updateSaveButton(true);
+                showToast("Added to Favourites");
+            } else {
+                const kept = favourites.filter(m => m.id !== savedMovie.id);
+                localStorage.setItem("favourites", JSON.stringify(kept));
+                updateSaveButton(false);
+                showToast("Removed from Favourites");
+            }
+        });
+        
     } catch (error) {
         console.error("Error fetching movie from TMDB:", error);
     }

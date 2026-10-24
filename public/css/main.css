@@ -15,7 +15,8 @@
 --muted-text: rgba(229, 249, 242, 0.6);
 
 /*backgrounds*/
---bg-gradient: linear-gradient(to bottom, #003486 0%, #070B28 100%);
+/*--bg-gradient: linear-gradient(to bottom, #003486 0%, #070B28 100%);*/
+--bg-gradient:  linear-gradient(var(--darkblue), var(--blue));
 
 /*layout*/
 --gap: 12px;
