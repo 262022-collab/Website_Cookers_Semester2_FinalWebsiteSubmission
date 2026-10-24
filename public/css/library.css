@@ -36,14 +36,14 @@ font-family: var(--font-heading);
 color: var(--heading-text);
 }
 
-.genre-scroll-row {
+.genreScrollRow {
     display: flex;
     align-items: center;
     gap: 8px;
     width: 100%;
 }
 
-.genre-scroll {
+.genreScroll {
     flex: 1 1 auto;
     min-width: 0;
     overflow-x: auto;
@@ -56,11 +56,11 @@ color: var(--heading-text);
     padding: 1px 0 4px;
 }
 
-.genre-scroll::-webkit-scrollbar {
+.genreScroll::-webkit-scrollbar {
     display: none;
 }
 
-.genre-scroll-control {
+.genreScrollControl {
     flex: 0 0 34px;
     width: 34px;
     height: 33px;
@@ -73,16 +73,16 @@ color: var(--heading-text);
     cursor: pointer;
 }
 
-.genre-scroll-control:hover {
+.genreScrollControl:hover {
     color: var(--orange);
     background: rgba(255, 255, 255, 0.1);
 }
 
-.genre-scroll-control[hidden] {
+.genreScrollControl[hidden] {
     display: none;
 }
 
-.genre-list {
+.genreList {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -91,7 +91,7 @@ color: var(--heading-text);
     min-width: 100%;
 }
 
-.genre-button {
+.genreBut {
     flex: 0 0 auto;
     padding: 6px 20px;
     border: 1px solid var(--white);
@@ -105,9 +105,71 @@ color: var(--heading-text);
     transition: all 0.2s ease;
 }
 
-.genre-button:hover,
-.genre-button.active {
+.genreBut:hover,
+.genreBut.active {
     background: var(--orange);
     color: var(--white);
     border-color: var(--white);
+}
+
+.card {
+    background-color: var(--bg-gradient) !important;
+    border-radius: var(--radius) !important;
+    border: 3px solid var(--orange) !important;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.btnWN {
+    padding: 10px 24px;
+    font-family: var(--fontBody);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white) !important;
+    background-color: var(--orange);
+    border-radius: var(--radius);
+    border: 1px solid var(--white);
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.btnWN:hover {
+    background-color: #E44400;
+    color: var(--white) !important;
+}
+
+.btnWN:active {
+    background-color: #FF8400;
+}
+
+/* Secondary Button Style (Default: #070B28, Hover: #070B2893, Active: #FF8400 with 1px solid orange border) */
+.btnFav {
+    padding: 10px 20px;
+    font-family: var(--fontBody);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--orange) !important;
+    background-color: #070B28;
+    border-radius: var(--radius);
+    border: 1px solid var(--white);
+    text-transform: capitalize;
+    cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.btnFav:hover {
+    background-color: #070b2893;
+    color: var(--orange) !important;
+}
+
+.btnFav:active {
+    background-color: #FF8400;
+    color: var(--white) !important;
+    border: 1px solid var(--orange);
 }

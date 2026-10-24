@@ -21,7 +21,7 @@ class Movie {
 
 // HORIZONTAL SCROLLING FOR GENRE FILTER
 function initialiseGenreScrolling() {
-    const genreScroll = document.querySelector(".genre-scroll");
+    const genreScroll = document.querySelector(".genreScroll");
 
     if (!genreScroll) {
         return;
@@ -126,7 +126,7 @@ class MovieGrid {
                             <p class="card-text text-muted small mb-3">${releaseYear} • ${displayGenres}</p>
                             <div class="d-grid gap-2 mt-auto">
                                 <a href="#" class="btn btnWN btn-sm fw-bold">Watch Now</a>
-                                <button type="button" class="btn btn-outline-secondary btn-sm favouritesBtn" data-id="${movie.id}">${isSaved ? "Remove" : "Add to Favourites"}</button>
+                                <button type="button" class="btn btnFav btn-sm favouritesBtn" data-id="${movie.id}">${isSaved ? "Remove" : "Add to Favourites"}</button>
                             </div>
                         </div>
                     </div>
