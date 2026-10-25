@@ -911,6 +911,9 @@ a {
 
 /* RESPONSIVE MEDIA QUERIES */
 @media (max-width: 767px) {
+    .hero {
+        aspect-ratio: 3 / 2;
+    }
     .hero-copy p { font-size: 13px; }
 }
 
