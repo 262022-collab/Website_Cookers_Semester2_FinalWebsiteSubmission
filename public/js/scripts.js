@@ -1,9 +1,26 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 import { auth } from "./firebase-config.js";
+import {getFavouritesKey} from "./user-id.js"; // > leah 
+const FAVOURITES_KEY = await getFavouritesKey();
+
+// > Show toast message when item is added to favourites (Leah)
+function showToast(msg) {
+    const toastBody = document.getElementById("favToastMsg");
+    toastBody.textContent = msg;
+
+    const toast = document.getElementById("favToast");
+    
+    bootstrap.Toast.getOrCreateInstance(toast).show();
+} 
+
+function getFavourites() {
+    return JSON.parse(localStorage.getItem(FAVOURITES_KEY) || "[]");
+}
+ // <
 
 // Movie Class Definition
 class Movie {
-    constructor(_id, _title, _overview, _releaseDate, _image, _backdrop, _rating = "N/A") {
+    constructor(_id, _title, _overview, _releaseDate, _image, _backdrop, _rating, _genres = "N/A") {
         this.id = _id;
         this.title = _title;
         this.overview = _overview;
@@ -11,6 +28,7 @@ class Movie {
         this.image = _image;
         this.backdrop = _backdrop;
         this.rating = _rating;
+        this.genres = []; //leah
     }
 }
 
@@ -135,7 +153,18 @@ class PopularCarousel {
         });
 
         this.updateHeroDetails();
+
     }
+
+    // >leah
+        updateFavButton() {
+            const favBtn = document.getElementById("heroFavBtn");
+            const movie = this.movies[this.selectedIndex];
+            if (!favBtn || !movie) return;
+
+            const isSaved = getFavourites().some(m => m.id === movie.id);
+            favBtn.textContent = isSaved ? "-" : "+";
+        } // <
 
     // Show the selected movie's title & rating and highlight its card
     updateHeroDetails() {
@@ -161,6 +190,7 @@ class PopularCarousel {
                 card.classList.remove("selected");
             }
         });
+        this.updateFavButton(); //leah
     }
 
     // Open the clicked movie on the individual item page
@@ -170,6 +200,24 @@ class PopularCarousel {
     }
 
     bindEvents() {
+        // > leah
+        document.getElementById("heroFavBtn").addEventListener("click", () => {
+            const movie = this.movies[this.selectedIndex];
+            const favourites = getFavourites();
+            const alreadyAdded = favourites.some(m => m.id === movie.id);
+
+            if (!alreadyAdded) {
+                favourites.push(movie);
+                localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
+                showToast("Added to Favourites");
+            } else {
+                const kept = favourites.filter(m => m.id !== movie.id);
+                localStorage.setItem(FAVOURITES_KEY, JSON.stringify(kept));
+                showToast("Removed from Favourites");
+            }
+            this.updateFavButton();
+        }); //<
+
         this.inner.addEventListener("click", event => {
             const card = event.target.closest(".popular-card");
          if (!card) return;

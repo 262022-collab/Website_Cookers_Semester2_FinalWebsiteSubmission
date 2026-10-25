@@ -1015,3 +1015,11 @@ a {
 .hero-content{
     padding-top: 4rem;
 }
+
+.toast {
+    color: #0e154a;
+}
+
+.toast-header {
+    color: #0e154a;
+}

@@ -95,7 +95,7 @@
 
                             <div class="hero-actions d-flex align-items-center flex-wrap gap-3 mt-4">
                                 <div class="hero-icon-wrap d-flex align-items-center gap-3 ms-lg-2">
-                                    <button class="hero-circle-btn" type="button" aria-label="Add to watchlist">
+                                    <button class="hero-circle-btn" id="heroFavBtn" type="button" aria-label="Add to watchlist">
                                         <span>＋</span>
                                     </button>
                                     <a class="hero-circle-btn hero-info-btn" id="heroInfoLink" href="#" aria-label="More info">
@@ -170,6 +170,20 @@
             </div>
         </section>        
     </main>
+
+    <!-- TOAST (leah)--> 
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="favToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Favourites</strong>
+                    <small class="text-body-secondary">just now</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    <span id="favToastMsg"></span>
+                </div>
+            </div>
+        </div>
 
     <footer class="site-footer">
         <div class="footer-row">
