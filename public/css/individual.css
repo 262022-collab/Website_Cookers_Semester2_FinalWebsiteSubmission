@@ -213,16 +213,234 @@ color: var(--white);
     background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Details line */
+.movie-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.details-dot {
+    color: var(--muted-white);
+}
+
+.age-rating {
+    padding: 2px 8px;
+    border: 1px solid var(--white);
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+/* Genres */
+.genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.genre-tag {
+    padding: 6px 16px;
+    border: 1px solid var(--orange);
+    border-radius: var(--radius);
+    color: var(--orange);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Sections below hero */
+.movie-extras {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    padding-top: 64px;
+    padding-bottom: 96px;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    letter-spacing: 1px;
+    color: var(--orange);
+    margin-bottom: 1.5rem;
+}
+
+.empty-message {
+    color: var(--muted-white);
+    margin: 0;
+}
+
+/* Cast */
+.cast-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.cast-member {
+    text-align: center;
+}
+
+.cast-photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--blue);
+    object-fit: cover;
+    font-size: 2.5rem;
+    color: var(--muted-white);
+}
+
+.cast-name {
+    font-weight: 700;
+    margin: 0;
+}
+
+.cast-character {
+    font-size: 0.9rem;
+    color: var(--muted-white);
+    margin: 0;
+}
+
+/* Where to watch */
+.provider-group + .provider-group {
+    margin-top: 1.5rem;
+}
+
+.provider-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted-white);
+    margin-bottom: 0.75rem;
+}
+
+.provider-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.provider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px 10px 10px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    background-color: var(--darkblue);
+    color: var(--white);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.provider:hover {
+    border-color: var(--orange);
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.6);
+    color: var(--white);
+}
+
+.provider img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+}
+
+.provider-note {
+    font-size: 0.85rem;
+    color: var(--muted-white);
+    margin: 1rem 0 0;
+}
+
+/* Similar movies */
+.similar-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.similar-card {
+    display: block;
+    padding: 8px 8px 16px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    background: var(--bg-gradient);
+    color: var(--white);
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.similar-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--orange);
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.6);
+    color: var(--white);
+}
+
+.similar-poster {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.similar-title {
+    font-weight: 700;
+    margin: 0 0 4px;
+    padding: 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.similar-meta {
+    font-size: 0.85rem;
+    color: var(--muted-white);
+    margin: 0;
+    padding: 0 6px;
+}
+
+.similar-meta i {
+    color: #ffc107;
+}
+
+/* Fewer columns on smaller screens */
+@media (max-width: 991px) {
+    .cast-list,
+    .similar-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575px) {
+    .cast-list,
+    .similar-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 /* Footer */
 .site-footer {
-    background-color: #000000;
+    background-color: var(--darkblue);
     padding: 50px 80px;
     font-size: 17px;
-    color: #fff;
+    color: var(--white);
 }
 
 .site-footer a {
-    color: #fff;
+    color: var(--white);
     text-decoration: none;
 }
 
