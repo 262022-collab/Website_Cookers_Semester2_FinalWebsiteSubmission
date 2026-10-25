@@ -19,11 +19,11 @@ class Movie {
         this.releaseDate = _releaseDate;
         this.image = _image;
         this.id = _id;
-        this.genres = _genres; // Array of genre names like ["Action", "Thriller"]
+        this.genres = _genres; 
     }
 }
 
-// HORIZONTAL SCROLLING FOR GENRE FILTER
+// horrzontal genre scrolling for smaller screen
 function initialiseGenreScrolling() {
     const genreScroll = document.querySelector(".genreScroll");
 
@@ -72,7 +72,7 @@ function initialiseGenreScrolling() {
     );
 }
 
-// MOVIE GRID CLASS INTEGRATING TMDB API DATA & GENRE FILTERING
+// movie grid class for api integration-dec
 class MovieGrid {
     constructor(moviesList) {
         this.grid = document.getElementById("movieGrid");
@@ -105,14 +105,14 @@ class MovieGrid {
             );
         }
 
-        // Optional: Apply earliest-first date sorting if toggled on
+        
         if (this.sortByDate) {
             result = [...result].sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate));
         }
 
         return result;
     }
-    // <
+    
 
     render() {
         const filtered = this.getFilteredMovies();
@@ -206,7 +206,7 @@ class MovieGrid {
             button.textContent = "Add to Favourites"
             showToast("Removed from Favourites")
         }
-        }); // <<
+        }); 
 
        const genreList = document.getElementById("genreList");
         if (genreList) {
@@ -214,7 +214,7 @@ class MovieGrid {
                 const button = event.target.closest(".genreBut");
                 if (!button) return;
 
-                // Check if the sort button was clicked
+                // check to seeif the sort button was clicked
                 if (button.id === "sortDateBtn") {
                     this.sortByDate = !this.sortByDate; // Toggle sort state
                     button.classList.toggle("active", this.sortByDate);
@@ -223,7 +223,7 @@ class MovieGrid {
                     return;
                 }
 
-                // Normal genre click handling
+                // normal genre click handling
                 document.querySelectorAll(".genreBut:not(#sortDateBtn)").forEach(item => {
                     item.classList.remove("active");
                 });
@@ -235,7 +235,8 @@ class MovieGrid {
     }
 }
 
-// FETCH API & INITIALISE LIBRARY PAGE
+// make 2 seperate pages to go from default 20 movies to 40
+// NB!! please dont touch the api key and integration. This is the way Talya tought us pluss extra for 40 pgs.-declan
 !async function () {
     const page1Url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
     const page2Url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=2';
@@ -250,7 +251,7 @@ class MovieGrid {
     };
 
     try {
-        // Fetch Genres and both Pages of Movies simultaneously
+        // fetch genres and both pages of movies at the same time. more smoothe
         const [genresResponse, page1Response, page2Response] = await Promise.all([
             fetch(genresUrl, options).then(res => res.json()),
             fetch(page1Url, options).then(res => res.json()),
@@ -264,7 +265,7 @@ class MovieGrid {
             });
         }
 
-        // Combine results from page 1 and page 2, then slice to exactly 25 movies
+        // combine results from page 1 n page 2
         const combinedResults = [...page1Response.results, ...page2Response.results];
 
         const loadedMovies = combinedResults.map(item => {
