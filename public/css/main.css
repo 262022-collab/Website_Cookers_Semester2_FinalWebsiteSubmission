@@ -1,6 +1,5 @@
-/* SHARED COLORS & VARIABLES */
 :root{
-/*colours*/
+/* colours */
 --white: #e5f9f2;
 --darkblue: rgb(0, 1, 18);
 --blue: #0e154a;
@@ -14,11 +13,10 @@
 --page-text: var(--white);
 --muted-text: rgba(229, 249, 242, 0.6);
 
-/*backgrounds*/
-/*--bg-gradient: linear-gradient(to bottom, #003486 0%, #070B28 100%);*/
+/* backgrounds */
 --bg-gradient:  linear-gradient(var(--darkblue), var(--blue));
 
-/*layout*/
+/* layout */
 --gap: 12px;
 --radius: 16px;
 
@@ -104,7 +102,6 @@ color: var(--heading-text);
     color: var(--white);
 }
 
-/* GLOBAL STYLES */
 * {
     box-sizing: border-box;
 }
@@ -138,7 +135,7 @@ a {
     text-decoration: none;
 }
 
-/* HERO SECTION (HOME PAGE) */
+/* Home page */
 .hero {
     position: relative;
     width: 100%;
@@ -488,7 +485,7 @@ a {
     }
 }
 
-/* POPULAR SECTION & CAROUSEL (HOME PAGE) */
+/* Popular section carousel */
 .popular-section,
 .upcoming-section {
     padding: 39px 0 61px;
@@ -774,7 +771,7 @@ a {
 }
 
 
-/* GENRE SCROLLING (USED ON LIBRARY PAGE) */
+/* Genre scrolling */
 .genre-scroll-row {
     display: flex;
     align-items: center;
@@ -851,7 +848,7 @@ a {
     border-color: #575757;
 }
 
-/* LIBRARY CARD & BUTTON STYLES */
+/* Library card and btn styles*/
 .moviePost {
     width: 100%;
     height: 320px;
@@ -879,7 +876,7 @@ a {
     color: #fff !important; 
 }
 
-/* SHOW MORE BUTTON */
+/* Show more button */
 .show-more-wrapper {
     display: flex;
     justify-content: center;
@@ -909,7 +906,7 @@ a {
     transform: translateY(-3px);
 }
 
-/* RESPONSIVE MEDIA QUERIES */
+/* Responsiveness */
 @media (max-width: 767px) {
     .hero {
         aspect-ratio: 3 / 2;
