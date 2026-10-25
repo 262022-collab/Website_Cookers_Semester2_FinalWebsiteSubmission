@@ -998,3 +998,20 @@ a {
         text-align: center;
     }
 }
+
+/* (Leah) Welcome message styling */
+.hero-welcome-wrap{
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    right: 0;
+    z-index: 3;
+}
+
+.hero-welcome{
+    color: var(--white);
+}
+
+.hero-content{
+    padding-top: 4rem;
+}

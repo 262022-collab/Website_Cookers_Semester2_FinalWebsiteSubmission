@@ -1,4 +1,5 @@
-const FAVOURITES_KEY = "favourites";
+import { getFavouritesKey } from "./user-id.js";
+const FAVOURITES_KEY = await getFavouritesKey();
 const grid = document.getElementById("favouritesGrid");
 
 let lastRemoved = null;
@@ -63,16 +64,16 @@ grid.addEventListener("click", event => {
 
 });
 
-// Toast pop-up message
+//Toast pop-up message
 
-function showToast(msg) {
-    const toastBody = document.getElementById("favToastMsg");
-    toastBody.textContent = msg;
+// function showToast(msg) {
+//    const toastBody = document.getElementById("favToastMsg");
+//    toastBody.textContent = msg;
 
-    const toast = document.getElementById("favToast");
+//    const toast = document.getElementById("favToast");
     
-    bootstrap.Toast.getOrCreateInstance(toast).show();
-}
+//    bootstrap.Toast.getOrCreateInstance(toast).show();
+//}
 
 // Undo button
 

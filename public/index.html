@@ -51,8 +51,8 @@
                     </li>
                 </ul>
 
-                <form class="nav-search d-flex align-items-center mx-auto mx-lg-0" role="search">
-                    <input class="nav-search-input" type="search" placeholder="Search..." aria-label="Search">
+                <form class="nav-search d-flex align-items-center mx-auto mx-lg-0" id="searchForm" role="search">
+                    <input class="nav-search-input" id="searchInput" type="search" placeholder="Search..." aria-label="Search">
                     <button class="nav-search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
@@ -81,6 +81,9 @@
                 <button class="hero-nav-btn" id="heroNext" type="button" data-bs-target="#heroCarousel"
                     data-bs-slide="next" aria-label="Next popular title">›</button>
             </div>
+            <div class="container-fluid hero-welcome-wrap px-3 px-md-4 px-xl-5">
+                <p id="welcomeMessage" class="hero-welcome mb-0">Welcome!</p>
+             </div>
             <div class="container-fluid hero-content h-100 px-3 px-md-4 px-xl-5">
                 <div class="row w-100 align-items-center g-0 position-relative">
                     <div class="col-12 col-lg-6 hero-copy-wrap">

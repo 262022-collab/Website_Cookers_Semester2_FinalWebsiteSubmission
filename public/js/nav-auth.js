@@ -37,3 +37,18 @@ authLink.addEventListener("click", (event) => {
 });
 
 }
+
+const searchForm = document.getElementById("searchForm");
+const searchInput = document.getElementById("searchInput");
+
+searchForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const query = searchInput.value.trim();
+    if (query === "") return;
+
+    const inPagesFolder = window.location.pathname.includes("/pages/");
+    const libraryPath = inPagesFolder ? "library.html" : "pages/library.html";
+
+    window.location.href = `${libraryPath}?search=${encodeURIComponent(query)}`;
+});

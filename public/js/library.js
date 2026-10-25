@@ -1,3 +1,7 @@
+import { getFavouritesKey } from "./user-id.js";
+const FAVOURITES_KEY = await getFavouritesKey();
+
+
 // Show toast message when item is added to favourites (Leah)
 function showToast(msg) {
     const toastBody = document.getElementById("favToastMsg");
@@ -77,38 +81,58 @@ class MovieGrid {
         this.visibleCount = 10;
         this.activeGenre = "All";
 
+        const params = new URLSearchParams(window.location.search); // > (Leah) Search functionality
+        this.searchTerm = (params.get("search") || "").trim(); // <
+
         this.render();
         this.bindEvents();
     }
 
     getFilteredMovies() {
-        if (this.activeGenre === "All") {
-            return this.movies;
-        }
+        let result= this.movies; // > (Leah) Search Functionality
+
+            if (this.searchTerm) {
+                const term = this.searchTerm.toLowerCase();
+                result = result.filter(movie =>
+                    movie.title.toLowerCase().includes(term)
+                );
+            }
 
         // Check if the movie's genres array includes the selected genre button
-        return this.movies.filter(movie =>
-            movie.genres.includes(this.activeGenre)
-        );
+        //return this.movies.filter(movie =>
+        //    movie.genres.includes(this.activeGenre)
+        //);
+
+        if (this.activeGenre !== "All") {
+                result = result.filter(movie =>
+                    movie.genres.includes(this.activeGenre)
+                );
+            }
+            return result;
     }
+    // <
 
     render() {
         const filtered = this.getFilteredMovies();
         const visible = filtered.slice(0, this.visibleCount);
 
-        if (filtered.length === 0) {
+        if (filtered.length === 0) { // > (Leah) for search
+            const message = this.activeGenre === "All" && this.searchTerm
+            ? `No movies found for <strong>${this.searchTerm}</strong>.`
+            : `No movies found under <strong>${this.activeGenre}</strong>.`;
+            
             this.grid.innerHTML = `
                 <div class="col-12 text-center py-5">
-                    <p class="text-muted fs-5">No movies found under <strong>${this.activeGenre}</strong>.</p>
+                    <p class="text-muted fs-5">${message}</p>
                 </div>
-            `;
+            `; // <
             if (this.showMoreButton) {
                 this.showMoreButton.style.display = "none";
             }
             return;
         }
         
-        const saved = JSON.parse(localStorage.getItem("favourites") || "[]"); // Reads the saved list once (leah)
+        const saved = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || "[]"); // Reads the saved list once (leah)
 
         this.grid.innerHTML = visible.map(movie => {
             const releaseYear = movie.releaseDate ? movie.releaseDate.split("-")[0] : "N/A";
@@ -165,18 +189,18 @@ class MovieGrid {
         const movieId = Number(button.dataset.id);
         const movie = this.movies.find(m => m.id === movieId);
         
-        const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+        const favourites = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || "[]");
         
         const alreadyAdded = favourites.some(f => f.id === movie.id); // (toast notification when movie added to favourites)
         if(!alreadyAdded) {
             favourites.push(movie);
-            localStorage.setItem("favourites", JSON.stringify(favourites));
+            localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
             button.textContent = "Remove"
             showToast("Added to Favourites");
 
         } else {
            const kept = favourites.filter(f => f.id !== movie.id) ;
-           localStorage.setItem("favourites", JSON.stringify(kept));
+           localStorage.setItem(FAVOURITES_KEY, JSON.stringify(kept));
             button.textContent = "Add to Favourites"
             showToast("Removed from Favourites")
         }

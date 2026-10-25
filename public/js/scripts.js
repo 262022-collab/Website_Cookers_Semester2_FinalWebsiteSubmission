@@ -1,3 +1,6 @@
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+import { auth } from "./firebase-config.js";
+
 // Movie Class Definition
 class Movie {
     constructor(_id, _title, _overview, _releaseDate, _image, _backdrop, _rating = "N/A") {
@@ -443,3 +446,18 @@ class LatestReviews {
         });
     }
 }();
+
+// (Leah) Welcome message
+const welcomeMessage = document.getElementById("welcomeMessage");
+
+console.log("Welcome element:", welcomeMessage);
+
+onAuthStateChanged(auth, (user) => {
+    console.log("Current Firebase user:", user);
+
+    if (welcomeMessage) {
+        welcomeMessage.textContent = user
+            ? `Welcome, ${user.email}!`
+            : "Welcome!";
+    }
+});

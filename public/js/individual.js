@@ -1,9 +1,11 @@
+import { getFavouritesKey } from "./user-id.js";
+const FAVOURITES_KEY = await getFavouritesKey();
 const params = new URLSearchParams(window.location.search);
 const movieId = params.get("id");
 
 // Leah - Add to favourites
 function isSaved(id) { 
-    const saved = JSON.parse(localStorage.getItem("favourites") || "[]");
+    const saved = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || "[]");
     return saved.some(m => m.id === id);
 }
 
@@ -70,17 +72,17 @@ function displayMovie(movie) {
         updateSaveButton(isSaved(savedMovie.id)); 
 
         document.getElementById("saveBtn").addEventListener("click", event => {
-            const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+            const favourites = JSON.parse(localStorage.getItem(FAVOURITES_KEY) || "[]");
             const alreadyAdded = favourites.some(m => m.id === savedMovie.id);
 
             if(!alreadyAdded) {
                 favourites.push(savedMovie);
-                localStorage.setItem("favourites", JSON.stringify(favourites));
+                localStorage.setItem(FAVOURITES_KEY, JSON.stringify(favourites));
                 updateSaveButton(true);
                 showToast("Added to Favourites");
             } else {
                 const kept = favourites.filter(m => m.id !== savedMovie.id);
-                localStorage.setItem("favourites", JSON.stringify(kept));
+                localStorage.setItem(FAVOURITES_KEY, JSON.stringify(kept));
                 updateSaveButton(false);
                 showToast("Removed from Favourites");
             }
