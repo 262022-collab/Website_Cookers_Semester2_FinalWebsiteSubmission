@@ -80,6 +80,7 @@ class MovieGrid {
         this.movies = moviesList;
         this.visibleCount = 10;
         this.activeGenre = "All";
+        this.sortByDate = false;
 
         const params = new URLSearchParams(window.location.search); // > (Leah) Search functionality
         this.searchTerm = (params.get("search") || "").trim(); // <
@@ -88,27 +89,28 @@ class MovieGrid {
         this.bindEvents();
     }
 
-    getFilteredMovies() {
-        let result= this.movies; // > (Leah) Search Functionality
+   getFilteredMovies() {
+        let result = this.movies; // > (Leah) Search Functionality
 
-            if (this.searchTerm) {
-                const term = this.searchTerm.toLowerCase();
-                result = result.filter(movie =>
-                    movie.title.toLowerCase().includes(term)
-                );
-            }
-
-        // Check if the movie's genres array includes the selected genre button
-        //return this.movies.filter(movie =>
-        //    movie.genres.includes(this.activeGenre)
-        //);
+        if (this.searchTerm) {
+            const term = this.searchTerm.toLowerCase();
+            result = result.filter(movie =>
+                movie.title.toLowerCase().includes(term)
+            );
+        }
 
         if (this.activeGenre !== "All") {
-                result = result.filter(movie =>
-                    movie.genres.includes(this.activeGenre)
-                );
-            }
-            return result;
+            result = result.filter(movie =>
+                movie.genres.includes(this.activeGenre)
+            );
+        }
+
+        // Optional: Apply earliest-first date sorting if toggled on
+        if (this.sortByDate) {
+            result = [...result].sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate));
+        }
+
+        return result;
     }
     // <
 
@@ -206,13 +208,23 @@ class MovieGrid {
         }
         }); // <<
 
-        const genreList = document.getElementById("genreList");
+       const genreList = document.getElementById("genreList");
         if (genreList) {
             genreList.addEventListener("click", event => {
                 const button = event.target.closest(".genreBut");
                 if (!button) return;
 
-                document.querySelectorAll(".genreBut").forEach(item => {
+                // Check if the sort button was clicked
+                if (button.id === "sortDateBtn") {
+                    this.sortByDate = !this.sortByDate; // Toggle sort state
+                    button.classList.toggle("active", this.sortByDate);
+                    this.visibleCount = 10;
+                    this.render();
+                    return;
+                }
+
+                // Normal genre click handling
+                document.querySelectorAll(".genreBut:not(#sortDateBtn)").forEach(item => {
                     item.classList.remove("active");
                 });
 
@@ -225,7 +237,8 @@ class MovieGrid {
 
 // FETCH API & INITIALISE LIBRARY PAGE
 !async function () {
-    const popularUrl = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+    const page1Url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+    const page2Url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=2';
     const genresUrl = 'https://api.themoviedb.org/3/genre/movie/list?language=en-US';
     
     const options = {
@@ -237,13 +250,13 @@ class MovieGrid {
     };
 
     try {
-        // Fetch TMDB Genre list and Movies list at the same time
-        const [genresResponse, moviesResponse] = await Promise.all([
+        // Fetch Genres and both Pages of Movies simultaneously
+        const [genresResponse, page1Response, page2Response] = await Promise.all([
             fetch(genresUrl, options).then(res => res.json()),
-            fetch(popularUrl, options).then(res => res.json())
+            fetch(page1Url, options).then(res => res.json()),
+            fetch(page2Url, options).then(res => res.json())
         ]);
 
-        // Map Genre IDs to names (e.g., { 28: "Action", 35: "Comedy" })
         const genreMap = {};
         if (genresResponse && genresResponse.genres) {
             genresResponse.genres.forEach(g => {
@@ -251,8 +264,10 @@ class MovieGrid {
             });
         }
 
-        // Map TMDB API results array into Movie object instances with genre names
-        const loadedMovies = moviesResponse.results.map(item => {
+        // Combine results from page 1 and page 2, then slice to exactly 25 movies
+        const combinedResults = [...page1Response.results, ...page2Response.results];
+
+        const loadedMovies = combinedResults.map(item => {
             let title = item.title;
             let overview = item.overview;
             let releaseDate = item.release_date;
@@ -260,16 +275,13 @@ class MovieGrid {
                 ? "https://image.tmdb.org/t/p/w200" + item.poster_path 
                 : "assets/images/elementor-placeholder-image.png";
 
-            let id = item.id;    // (leah - added id for favourites functionality)
+            let id = item.id;    
 
-            // Map genre_ids from API to actual names
             let genres = (item.genre_ids || []).map(id => genreMap[id]).filter(Boolean);
 
-            return new Movie(title, overview, releaseDate, image, id, genres); // (leah - added id to list)
+            return new Movie(title, overview, releaseDate, image, id, genres);
         });
 
-
-        // Initialise Library Components with API Data
         new MovieGrid(loadedMovies);
         initialiseGenreScrolling();
 
