@@ -307,3 +307,99 @@ button.link {
     text-decoration: underline;
 	text-underline-offset: 2px;
 }
+
+/* Phone screen responsiveness fixes */
+@media (max-width: 600px) {
+	body {
+		height: auto;
+		min-height: 100dvh;
+		padding: 1rem;
+	}
+
+	.container {
+		height: auto;
+	}
+
+	.container h1,
+	.container h2 {
+		font-size: 26px;
+	}
+
+	.container__form {
+		position: static;
+		width: 100%;
+		height: auto;
+		transition: none;
+	}
+
+	.container--login,
+	.container--signup {
+		width: 100%;
+		opacity: 1;
+	}
+
+	.form {
+		height: auto;
+		padding: 2rem 1.5rem;
+	}
+
+	.form > .btn {
+		width: 100%;
+	}
+
+	.container--signup {
+		display: none;
+	}
+
+	.container.right-panel-active .container--signup {
+		display: block;
+		transform: none;
+		animation: none;
+	}
+
+	.container.right-panel-active .container--login {
+		display: none;
+	}
+
+	.container__overlay,
+	.container.right-panel-active .container__overlay {
+		position: static;
+		width: 100%;
+		height: auto;
+		transform: none;
+	}
+
+	.overlay,
+	.container.right-panel-active .overlay {
+		left: 0;
+		width: 100%;
+		height: auto;
+		transform: none;
+		background-attachment: scroll;
+	}
+
+	.overlay__panel {
+		position: static;
+		width: 100%;
+		padding: 1.5rem 0rem;
+		transform: none;
+	}
+
+	.overlay__panel p {
+		line-height: 1.4;
+		margin: 0.5rem 0 1rem;
+	}
+
+	.overlay--left {
+		display: none;
+	}
+
+	.container.right-panel-active .overlay--left {
+		display: flex;
+		transform: none;
+	}
+
+	.container.right-panel-active .overlay--right {
+		display: none;
+	}
+}
