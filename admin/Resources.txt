@@ -1,0 +1,36 @@
+API References:
+https://developer.themoviedb.org/reference/
+
+General Help:
+https://www.w3schools.com
+
+Promise All:
+https://www.w3schools.com/jsref/jsref_promise_all.asp
+
+Access Route Guard:
+https://blog.devgenius.io/bulletproof-your-angular-19-app-with-route-guards-90bf8060b48d
+
+https://firebase.google.com/docs/auth/web/start
+
+https://firebase.google.com/docs/auth/web/manage-users
+
+Forgot password:
+https://firebase.google.com/docs/auth/web/manage-users (Send a password reset email)
+
+Sign in/Sign up:
+https://codepen.io/dnlzrgz/pen/LYNVyPL
+
+.filter() Method:
+https://www.youtube.com/watch?v=VvSEKHKFvpQ
+
+Auto play Carousel:
+https://www.geeksforgeeks.org/javascript/create-an-autoplay-carousel-using-html-css-and-javascript/
+
+Array Method:
+https://dev.to/vanaf1979/uselful-array-methods-for-dealing-with-api-data-1f4e
+
+Optional Chaining:
+https://www.w3schools.com/jsref/jsref_oper_optional.asp
+
+.closest() Method
+https://www.w3schools.com/jsref/met_element_closest.asp
