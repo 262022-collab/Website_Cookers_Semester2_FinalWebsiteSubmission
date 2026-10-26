@@ -26,7 +26,7 @@ authLink.addEventListener("click", (event) => {
 
         signOut(auth)
         .then(function () {
-            window.location.href = "/public/sign_in.html"
+            window.location.href = "sign_in.html"
         })
         .catch(function(error) {
             console.log("Sign our error:" + error.code);
