@@ -95,7 +95,6 @@ color: var(--white);
     padding-bottom: 80px;
     min-height: 100vh;
     overflow: hidden;
-    background-image: url('../images/placeholder.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -140,16 +139,11 @@ color: var(--white);
 
 /* Movie Text */
 .movie-title {
-    font-family: 'Impact', 'Arial Narrow', sans-serif;
+    font-family: 'Anton', 'Arial Narrow', sans-serif;
     font-size: 4.5rem;
     font-weight: bold;
     letter-spacing: 1px;
     margin-bottom: 1.5rem;
-}
-
-.label {
-    margin-bottom: 0.25rem;
-    color: #f8f9fa;
 }
 
 .movie-description {

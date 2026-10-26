@@ -16,7 +16,7 @@ function toSavedMovie(movie) {
         releaseDate: movie.release_date,
         image: movie.poster_path 
             ? "https://image.tmdb.org/t/p/w200" + movie.poster_path 
-            : "assets/images/elementor-placeholder-image.png",
+            : "",
 
         id: movie.id,
         genres: (movie.genres || []).map(g => g.name)
@@ -198,11 +198,11 @@ function displayMovie(movie) {
 
     try {
         const movie = await fetch(movieUrl, options).then(res => res.json());
-            displayMovie(movie);
-            displayDetails(movie);
-            displayCast(movie);
-            displayProviders(movie);
-            displaySimilar(movie);
+        displayMovie(movie);
+        displayDetails(movie);
+        displayCast(movie);
+        displayProviders(movie);
+        displaySimilar(movie);
         const savedMovie = toSavedMovie(movie); // > Leah - Favourites
         updateSaveButton(isSaved(savedMovie.id)); 
 
