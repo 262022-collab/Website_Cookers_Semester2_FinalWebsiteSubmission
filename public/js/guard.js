@@ -8,6 +8,6 @@ import { auth } from "./firebase-config.js";
 //send signed out visitors to login page
 onAuthStateChanged(auth, (user) => {
     if (user === null) {
-        window.location.href = new URL("../sign_in.html", import.meta.url).href;
+        window.location.href = new URL("sign_in.html", import.meta.url).href;
     }
 });
