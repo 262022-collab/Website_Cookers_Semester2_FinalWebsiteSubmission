@@ -312,8 +312,10 @@ color: var(--white);
 }
 
 /* Where to watch */
-.provider-group + .provider-group {
-    margin-top: 1.5rem;
+.provider-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 48px;
 }
 
 .provider-label {
@@ -364,69 +366,50 @@ color: var(--white);
 }
 
 /* Similar movies */
-.similar-list {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 24px;
-}
-
-.similar-card {
-    display: block;
-    padding: 8px 8px 16px;
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius);
-    background: var(--bg-gradient);
-    color: var(--white);
-    text-decoration: none;
+.card {
+    background-color: transparent !important;
+    border-radius: var(--radius) !important;
+    border: 3px solid rgba(255, 255, 255, 0.1) !important;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
-.similar-card:hover {
+.card:hover {
     transform: translateY(-5px);
-    border-color: var(--orange);
-    box-shadow: 0 0 20px rgba(255, 106, 0, 0.6);
-    color: var(--white);
+    border-color: var(--orange) !important;
+    box-shadow: 0 0 20px rgba(255, 106, 0, 0.6) !important;
 }
 
-.similar-poster {
+.card-title {
+    color: var(--white) !important;
+}
+
+.card-text {
+    color: var(--muted-white) !important;
+}
+
+.moviePost {
     width: 100%;
     aspect-ratio: 2 / 3;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 12px;
 }
 
-.similar-title {
-    font-weight: 700;
-    margin: 0 0 4px;
-    padding: 0 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.similar-card {
+    text-decoration: none;
 }
 
-.similar-meta {
-    font-size: 0.85rem;
-    color: var(--muted-white);
-    margin: 0;
-    padding: 0 6px;
-}
-
-.similar-meta i {
+.similar-card .card-text i {
     color: #ffc107;
 }
 
-/* Fewer columns on smaller screens */
+/* Fewer cast columns on smaller screens */
 @media (max-width: 991px) {
-    .cast-list,
-    .similar-list {
+    .cast-list {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 575px) {
-    .cast-list,
-    .similar-list {
+    .cast-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }

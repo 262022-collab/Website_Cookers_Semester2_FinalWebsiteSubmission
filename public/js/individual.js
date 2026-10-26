@@ -151,11 +151,17 @@ function displaySimilar(movie) {
         const rating = m.vote_average ? m.vote_average.toFixed(1) : "N/A";
 
         return `
-            <a class="similar-card" href="individual.html?id=${m.id}">
-                <img class="similar-poster" src="https://image.tmdb.org/t/p/w342${m.poster_path}" alt="${m.title}" loading="lazy">
-                <p class="similar-title">${m.title}</p>
-                <p class="similar-meta"><i class="fa-solid fa-star"></i> ${rating} • ${year}</p>
-            </a>
+            <div class="col">
+                <a class="card h-100 shadow-sm similar-card" href="individual.html?id=${m.id}">
+                    <div class="p-2">
+                        <img src="https://image.tmdb.org/t/p/w342${m.poster_path}" class="card-img-top rounded moviePost" alt="${m.title}" loading="lazy">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-truncate">${m.title}</h5>
+                        <p class="card-text small mb-0">${year} • <i class="fa-solid fa-star"></i> ${rating}</p>
+                    </div>
+                </a>
+            </div>
         `;
     }).join("");
 }
