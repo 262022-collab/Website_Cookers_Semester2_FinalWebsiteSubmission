@@ -34,6 +34,19 @@ function updateSaveButton(saved) {
 }
 // <
 
+function displayMovie(movie) {
+    document.getElementById("movieTitle").textContent = movie.title;
+    document.getElementById("movieDescription").textContent = movie.overview;
+    document.getElementById("ratingNumber").textContent = movie.vote_average ? movie.vote_average.toFixed(1) : "N/A";
+
+    if (movie.backdrop_path) {
+        document.getElementById("hero").style.backgroundImage =
+            `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
+    }
+
+    document.title = movie.title;
+}
+
 // Details
 function formatRuntime(minutes) {
     if (!minutes) return "";
@@ -150,25 +163,25 @@ function displayProviders(movie) {
 function displaySimilar(movie) {
     const recommended = movie.recommendations?.results || [];
     const source = recommended.length > 0 ? recommended : (movie.similar?.results || []);
-    const similar = source.filter(m => m.poster_path).slice(0, 5);
+    const similar = source.filter(similarMovie => similarMovie.poster_path).slice(0, 5);
 
     if (similar.length === 0) {
         document.getElementById("similarSection").hidden = true;
         return;
     }
 
-    document.getElementById("similarList").innerHTML = similar.map(m => {
-        const year = m.release_date ? m.release_date.split("-")[0] : "N/A";
-        const rating = m.vote_average ? m.vote_average.toFixed(1) : "N/A";
+    document.getElementById("similarList").innerHTML = similar.map(similarMovie => {
+        const year = similarMovie.release_date ? similarMovie.release_date.split("-")[0] : "N/A";
+        const rating = similarMovie.vote_average ? similarMovie.vote_average.toFixed(1) : "N/A";
 
         return `
             <div class="col">
-                <a class="card h-100 shadow-sm similar-card" href="individual.html?id=${m.id}">
+                <a class="card h-100 shadow-sm similar-card" href="individual.html?id=${similarMovie.id}">
                     <div class="p-2">
-                        <img src="https://image.tmdb.org/t/p/w342${m.poster_path}" class="card-img-top rounded moviePost" alt="${m.title}" loading="lazy">
+                        <img src="https://image.tmdb.org/t/p/w342${similarMovie.poster_path}" class="card-img-top rounded moviePost" alt="${similarMovie.title}" loading="lazy">
                     </div>
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-truncate">${m.title}</h5>
+                        <h5 class="card-title text-truncate">${similarMovie.title}</h5>
                         <p class="card-text small mb-0">${year} • <i class="fa-solid fa-star"></i> ${rating}</p>
                     </div>
                 </a>
@@ -202,20 +215,6 @@ function setupTrailer(movie) {
     playBtn.addEventListener("click", () => {
         window.open(`https://www.youtube.com/watch?v=${trailer.key}`, "_blank", "noopener");
     });
-}
-
-function displayMovie(movie) {
-    document.getElementById("movieTitle").textContent = movie.title;
-    document.getElementById("movieDescription").textContent = movie.overview;
-    document.getElementById("ratingNumber").textContent = movie.vote_average ? movie.vote_average.toFixed(1) : "N/A";
-
-
-    if (movie.backdrop_path) {
-        document.getElementById("hero").style.backgroundImage =
-            `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`;
-    }
-
-    document.title = movie.title;
 }
 
 !async function () {

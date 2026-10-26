@@ -220,9 +220,9 @@ class PopularCarousel {
 
         this.inner.addEventListener("click", event => {
             const card = event.target.closest(".popular-card");
-         if (!card) return;
+            if (!card) return;
 
-        this.openMovie(card);
+            this.openMovie(card);
         });
 
         this.inner.addEventListener("keydown", event => {

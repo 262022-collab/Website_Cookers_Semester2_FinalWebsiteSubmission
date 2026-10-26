@@ -1,10 +1,11 @@
-:root{
+:root {
 /*colours*/
 --white : #e5f9f2;
 --darkblue: rgb(0, 1, 18);
 --blue: #0e154a;
 --lightblue: #00418c;
 --orange: #FF6A00;
+--yellow: #ffc107;
 --muted-white: rgba(229, 249, 242, 0.689);
 
 /*text*/
@@ -23,7 +24,7 @@
 --font-body: "Mulish", sans-serif;
 }
 
-body{
+body {
 font-family: var(--font-body);
 color: var(--white);
 background: var(--bg-gradient);
@@ -31,11 +32,12 @@ background-repeat: no-repeat;
 min-height: 100vh;
 }
 
-h1, h2, h3{
+h1, h2, h3 {
 font-family: var(--font-heading);
 color: var(--white);
 }
 
+/* Navigation Bar */
 .site-nav{
     background-color: var(--darkblue);
     font-family: var(--font-body) !important;
@@ -87,7 +89,7 @@ color: var(--white);
     color: var(--white);
 }
 
-/* Main Section */
+/* Main section */
 .hero {
     position: relative;
     display: flex;
@@ -102,6 +104,7 @@ color: var(--white);
 
 .movie-info{
     color: var(--white);
+    max-width: 600px;
 }
 
 .movie-info > :last-child,
@@ -129,19 +132,15 @@ color: var(--white);
     gap: 40px;
 }
 
-.movie-info {
-    max-width: 600px;
-}
-
 .movie-actions {
     flex-shrink: 0;
 }
 
-/* Movie Text */
+/* Movie text */
 .movie-title {
-    font-family: 'Anton', 'Arial Narrow', sans-serif;
+    font-family: var(--font-heading);
     font-size: 4.5rem;
-    font-weight: bold;
+    font-weight: 400;
     letter-spacing: 1px;
     margin-bottom: 1.5rem;
 }
@@ -168,7 +167,7 @@ color: var(--white);
 }
 
 .stars {
-    color: #ffc107;
+    color: var(--yellow);
     font-size: 2.5rem;
 }
 
@@ -188,13 +187,17 @@ color: var(--white);
 }
 
 .btn-play {
-    background-color: #ff6600;
+    background-color: var(--orange);
     color: #000000;
     border: none;
 }
 
 .btn-play:hover {
     background-color: #e95d03;
+}
+
+.btn-play i {
+    margin-right: 8px;
 }
 
 .btn-save {
@@ -414,7 +417,7 @@ color: var(--white);
 }
 
 .similar-card .card-text i {
-    color: #ffc107;
+    color: var(--yellow);
 }
 
 /* Fewer cast columns on smaller screens */
