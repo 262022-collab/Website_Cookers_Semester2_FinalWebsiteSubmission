@@ -26,10 +26,10 @@ authLink.addEventListener("click", (event) => {
 
         signOut(auth)
         .then(function () {
-            window.location.href = "sign_in.html"
+            window.location.href = new URL("../sign_in.html", import.meta.url).href;
         })
         .catch(function(error) {
-            console.log("Sign our error:" + error.code);
+            console.log("Sign out error:" + error.code);
             alert("Could not sign out. Please wait a moment and try again.")
         });
     }
