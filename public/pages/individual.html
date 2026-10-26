@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="movie, movie details, description, rating">
-    <meta name="author" content="Lauhan Winterbach 262067">
+    <meta name="author" content="Website Cookers">
 
     <title>Movie Details</title>
 
@@ -80,7 +80,7 @@
                 </div>
 
                 <div class="buttons">
-                    <button class="btn-play" type="button"><i class="fa-solid fa-play"></i>Play movie</button>
+                    <button class="btn-play" id="playBtn" type="button"><i class="fa-solid fa-play"></i>Play trailer</button>
                     <button class="btn-save" id="saveBtn" type="button">Add to Favourites</button>
                 </div>
             </div>
@@ -92,7 +92,10 @@
     <div class="container movie-extras">
 
         <section id="castSection">
-            <h2 class="section-title">Cast</h2>
+            <div class="cast-header">
+                <h2 class="section-title">Cast</h2>
+                <p class="director" id="movieDirector"></p>
+            </div>
             <div class="cast-list" id="castList"></div>
         </section>
 

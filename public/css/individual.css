@@ -305,6 +305,28 @@ color: var(--white);
     margin: 0;
 }
 
+.cast-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px 24px;
+    margin-bottom: 1.5rem;
+}
+
+.cast-header .section-title {
+    margin-bottom: 0;
+}
+
+.director {
+    margin: 0;
+    color: var(--muted-white);
+}
+
+.director strong {
+    color: var(--white);
+}
+
 /* Where to watch */
 .provider-groups {
     display: flex;

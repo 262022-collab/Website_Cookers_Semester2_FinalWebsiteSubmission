@@ -46,7 +46,7 @@ function formatRuntime(minutes) {
 function getAgeRating(movie) {
     const countries = movie.release_dates?.results || [];
 
-    // Use South African rating, otherwise fall back to US rating
+    // South African rating, or fall back to US rating
     for (const code of ["ZA", "US"]) {
         const country = countries.find(c => c.iso_3166_1 === code);
         const rated = country?.release_dates.find(r => r.certification);
@@ -87,6 +87,17 @@ function displayCast(movie) {
     if (cast.length === 0) {
         document.getElementById("castSection").hidden = true;
         return;
+    }
+
+    const directors = (movie.credits?.crew || [])
+        .filter(person => person.job === "Director")
+        .map(person => person.name);
+
+    const directorText = document.getElementById("movieDirector");
+    if (directors.length > 0) {
+        directorText.innerHTML = `Directed by <strong>${directors.join(" & ")}</strong>`;
+    } else {
+        directorText.hidden = true;
     }
 
     document.getElementById("castList").innerHTML = cast.map(person => {
@@ -166,6 +177,33 @@ function displaySimilar(movie) {
     }).join("");
 }
 
+// Trailer
+function getTrailer(movie) {
+    const youtubeVideos = (movie.videos?.results || []).filter(video => video.site === "YouTube");
+
+    return youtubeVideos.find(video => video.type === "Trailer" && video.official)
+        || youtubeVideos.find(video => video.type === "Trailer")
+        || youtubeVideos.find(video => video.type === "Teaser")
+        || null;
+}
+
+function setupTrailer(movie) {
+    const playBtn = document.getElementById("playBtn");
+    const trailer = getTrailer(movie);
+
+    if (!trailer) {
+        playBtn.innerHTML = `<i class="fa-solid fa-tv"></i>Where to watch`;
+        playBtn.addEventListener("click", () => {
+            document.getElementById("watchSection").scrollIntoView({ behavior: "smooth" });
+        });
+        return;
+    }
+
+    playBtn.addEventListener("click", () => {
+        window.open(`https://www.youtube.com/watch?v=${trailer.key}`, "_blank", "noopener");
+    });
+}
+
 function displayMovie(movie) {
     document.getElementById("movieTitle").textContent = movie.title;
     document.getElementById("movieDescription").textContent = movie.overview;
@@ -186,7 +224,7 @@ function displayMovie(movie) {
         return;
     }
 
-    const movieUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US&append_to_response=credits,release_dates,watch/providers,recommendations,similar`;
+    const movieUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US&append_to_response=credits,release_dates,watch/providers,recommendations,similar,videos`;
 
     const options = {
         method: 'GET',
@@ -203,6 +241,7 @@ function displayMovie(movie) {
         displayCast(movie);
         displayProviders(movie);
         displaySimilar(movie);
+        setupTrailer(movie);
         const savedMovie = toSavedMovie(movie); // > Leah - Favourites
         updateSaveButton(isSaved(savedMovie.id)); 
 
